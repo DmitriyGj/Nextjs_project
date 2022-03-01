@@ -1,0 +1,25 @@
+.CharacterCard{
+    justify-content: center;
+    font-size: 2.3vw;
+    border: 2px solid gray;
+    border-radius: 20px;
+    box-sizing: border-box;
+    padding: 1%;
+    display: grid;
+    grid-template-columns: repeat(3,20vw) ;
+    width: 80vw;
+    gap: 5vw;
+    height: 15vh;
+    margin: 3vh auto;
+
+    background-color: white;
+    *{
+        box-sizing: border-box;
+    }
+
+    &:hover{
+        cursor: pointer;
+    }
+}
+
+

@@ -1,0 +1,68 @@
+@mixin transform($transforms) {
+    -moz-transform: $transforms;
+    -o-transform: $transforms;
+    -ms-transform: $transforms;
+    -webkit-transform: $transforms;
+    transform: $transforms;
+}
+
+@mixin box-shadow($shadow) {
+    -webkit-box-shadow: $shadow;
+    -moz-box-shadow: $shadow;
+    box-shadow: $shadow;
+}
+
+@mixin rotate($deg) {
+    @include transform(rotate($deg));
+}
+
+@mixin animation($str) {
+    -webkit-animation: #{$str};
+    -moz-animation: #{$str};
+    -ms-animation: #{$str};
+    -o-animation: #{$str};
+    animation: #{$str};
+}
+
+$circle-loader-size: 40px;
+$circle-loader-color: #1e4f6d;
+.Loader {
+    width: $circle-loader-size;
+    height: $circle-loader-size;
+    position: fixed;
+    top: calc(50%);
+    left: calc(50% );
+    z-index: 999;
+    clip: rect(0px, $circle-loader-size, $circle-loader-size, ($circle-loader-size)/2);
+    @include animation(loader-animation 1s linear infinite);
+    &:after {
+        content: "";
+        @include box-shadow(inset 0 0 0 4px $circle-loader-color);
+        border-radius: 50%;
+        height: $circle-loader-size;
+        width: $circle-loader-size;
+        position: fixed;
+        clip: rect(0px, $circle-loader-size, $circle-loader-size, ($circle-loader-size)/2);
+        @include animation(loader-animation2 1s ease-in-out infinite);
+    }
+}
+
+@keyframes loader-animation {
+    0% {
+        @include rotate(0deg);
+    }
+    100% {
+        @include rotate(180deg);
+    }
+}
+
+@keyframes loader-animation2 {
+    0% {
+        transform: rotate(-180deg);
+        @include box-shadow(inset 0 0 0 8px $circle-loader-color);
+    }
+    100% {
+        transform: rotate(180deg);
+        @include box-shadow(inset 0 0 0 2px whiten($circle-loader-color, 10%));
+    }
+}
