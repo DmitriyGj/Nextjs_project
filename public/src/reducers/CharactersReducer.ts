@@ -23,8 +23,7 @@ export const fetchCharacterInfo =  createAsyncThunk(
     'characters/fetCharacter',
     async (id: string) => {
         const response = await IceAndFireService.getCharacter(id);
-        const data = await response;
-        return data;
+        return response;
     }
 )
 
@@ -59,7 +58,7 @@ const charactersSlice = createSlice({
         }),
         builder.addCase(fetchCharacterInfo.fulfilled, (state, action) => {
             state.fetchStatus = 'fulfilled';
-            state.characterInfo = action.payload;
+            state.currentCharacter = action.payload;
         })
     }
 });

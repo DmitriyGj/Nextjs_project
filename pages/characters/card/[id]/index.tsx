@@ -1,5 +1,6 @@
 import { getCharacterFullInfo, getCharactersStoreInfo } from "../../../../public/src/selectors/charactersSelectors";
 
+import { CharacterBlock } from "../../../../public/src/components/CharacterBlock/CharacterBlock";
 import { Loader } from "../../../../public/src/components/Loader/Loader";
 import { fetchCharacterInfo } from "../../../../public/src/reducers/CharactersReducer";
 import { useDispatch } from "react-redux";
@@ -16,14 +17,18 @@ const CharacterPage = () =>{
 
 
     useEffect(()=>{
-            dispatch(fetchCharacterInfo(id as string));
+            if(id){
+                dispatch(fetchCharacterInfo(id as string));
+            }
     },[id]);
+
 
 
     return(
         <div>
-            {fetchStatus === 'fulfilled' && characterInfo && <h1>{characterInfo?.name}</h1>}
-            {fetchStatus === 'pending' && <Loader />}
+            {fetchStatus === 'fulfilled' && characterInfo && <CharacterBlock {...characterInfo} />}
+            {fetchStatus === 'pending' && <Loader/>}
+            {fetchStatus === 'rejected' && <p>Что-то пошло не так</p>}
         </div>
     )
 };
