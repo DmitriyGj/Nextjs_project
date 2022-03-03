@@ -1,0 +1,23 @@
+.Layout{
+    box-sizing:border-box;
+    display: grid;
+    grid-template-columns: 15% 85%;
+    grid-template-rows: minmax(10%,200px) 1fr ;
+    height: 100vh;
+
+}
+
+.Header{
+    grid-column:1/-1 ;
+    grid-row:1/2;
+}
+
+.LeftSide{
+    grid-row:2/-1;
+    height: 100%;
+}
+.Body{
+    grid-column: 1/-1;
+    grid-row:2/-1;
+    padding: 0.5% 5%;
+}

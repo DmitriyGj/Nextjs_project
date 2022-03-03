@@ -7,6 +7,7 @@ import { IFetchParams } from "../public/src/ts/Slice.model";
 import Link from "next/link";
 import { Loader } from "../public/src/components/Loader/Loader";
 import { useEffect } from "react";
+import { withLayout } from "../public/src/HOC/Layout/Layout";
 
 const CardsPage = (): JSX.Element => {
     const characters = useSelector(getCharacters);
@@ -44,4 +45,4 @@ const CardsPage = (): JSX.Element => {
             
 }
 
-export default CardsPage;
+export default withLayout(CardsPage);

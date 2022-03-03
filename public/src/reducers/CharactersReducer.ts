@@ -1,7 +1,7 @@
 import { ICharactersState, IFetchParams } from "../ts/Slice.model";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import { IceAndFireService } from "../services/IceAndFireAPI/IceAndFireService";
+import { CharacterAPI } from "../services/CharacterAPI/CharacterAPI";
 
 const initialState: ICharactersState  = {
     fetchStatus:'needed',
@@ -15,14 +15,14 @@ const initialState: ICharactersState  = {
 export const fetchCharacters = createAsyncThunk(
     'characters/fetchCharacters',
     async (params: IFetchParams) => {
-        const response = await IceAndFireService.getCharacters(params.page,params.amount);
+        const response = await CharacterAPI.getMassiveData(params.page,params.offset);
         return response;
     });
 
 export const fetchCharacterInfo =  createAsyncThunk(
     'characters/fetCharacter',
     async (id: string) => {
-        const response = await IceAndFireService.getCharacter(id);
+        const response = await CharacterAPI.getFullData(id);
         return response;
     }
 )

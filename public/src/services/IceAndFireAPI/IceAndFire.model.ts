@@ -1,18 +1,6 @@
-export interface ICharacter{
-    url:string
-    id:string
-    name:string
-    gender: string
-    culture: string
-}
-
-export interface IHouse {
-    url: string
-    id: string
-    name: string
-    region: string
-}
-
-export interface IHouseFullInfo extends IHouse{
-    region
+export interface IIceAndFireAPI<T,F>{
+    baseURL: 'https://www.anapioficeandfire.com/api'
+    directory: string
+    getSingleData(id:string): Promise<F>
+    getPaginatedData?(amount: number, page: number): Promise<T[]>   
 }

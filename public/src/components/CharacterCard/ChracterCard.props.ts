@@ -1,5 +1,5 @@
-import { ICharacter } from "../../services/IceAndFireAPI/IceAndFire.model"
+import { ICharacterCard } from '../../services/CharacterAPI/CharacterAPI.model'
 
-export interface ICharacterCardProps extends ICharacter{
+export interface ICharacterCardProps extends ICharacterCard{
 
 }

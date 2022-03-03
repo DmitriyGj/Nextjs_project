@@ -1,0 +1,7 @@
+.Sidebar{
+    background-color:rgb(79, 79, 179);
+    height: 100vh;
+    & > {
+        font-size: 5vh;
+    }
+}
