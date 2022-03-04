@@ -1,4 +1,4 @@
-import {ICharacter} from '../services/IceAndFireAPI/IceAndFire.model'
+import {ICharacter} from '../services/CharacterAPI/CharacterAPI.model';
 import { ICharacterFullInfo } from './CharacterFullInfo'
 
 export interface ICharactersState {

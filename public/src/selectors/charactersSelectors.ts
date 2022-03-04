@@ -1,8 +1,8 @@
-import { RootState } from "../store/ChracterStore";
+import { RootState } from "../store/IceAndFireStore";
 
 export const getCharacters = (state: RootState) => {
-    const {characters: charactersInfo} = state;
-    return charactersInfo.characters;
+    const {characters: charactersInfo} = state; 
+    return charactersInfo.items;
 }
 
 export const getCharactersStoreInfo = (state: RootState) => {
@@ -11,6 +11,6 @@ export const getCharactersStoreInfo = (state: RootState) => {
 }
 
 export const getCharacterFullInfo = (state: RootState) => {
-    const {currentCharacter} = state.characters
+    const {currentItem:currentCharacter} = state.characters
     return currentCharacter;
 }

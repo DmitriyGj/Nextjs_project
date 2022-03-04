@@ -3,13 +3,13 @@ import { getCharacters, getCharactersStoreInfo } from "../public/src/selectors/c
 import {useDispatch, useSelector} from "react-redux";
 
 import { ChracterCard } from "../public/src/components/CharacterCard/CharacterCard";
-import { IFetchParams } from "../public/src/ts/Slice.model";
+import { IFetchParams } from "../public/src/ts";
 import Link from "next/link";
 import { Loader } from "../public/src/components/Loader/Loader";
 import { useEffect } from "react";
 import { withLayout } from "../public/src/HOC/Layout/Layout";
 
-const CardsPage = (): JSX.Element => {
+const CharacterCardsPage = (): JSX.Element => {
     const characters = useSelector(getCharacters);
     const {page, offset, fetchStatus} = useSelector(getCharactersStoreInfo);
     const dispatch = useDispatch();
@@ -25,18 +25,20 @@ const CardsPage = (): JSX.Element => {
     },[page])
 
     const handleScroll = (e: Event) => {
-        const isNearBottom = window.innerHeight + window.scrollY > document.body.offsetHeight;
+        const isNearBottom = window.innerHeight + window.scrollY > document.body.offsetHeight + 380;
         if(isNearBottom){
-            dispatch(incrementPage());
+            if(fetchStatus !== 'pending'){
+                dispatch(incrementPage());
+            }
         }
     };
 
     return(<div>
                 <h1>Chraracter&apos;s List</h1>
                 <div>
-                    {characters.map((card, index) =>{ 
-                        return (<Link href={`/characters/card/${card.id}`} key = {index}>
-                                    <a>< ChracterCard key = {index} {...card} / ></a>
+                    {characters && characters.map(card =>{ 
+                        return (<Link href={`/characters/${card.id}`} key = {card.id}>
+                                    <a>< ChracterCard  {...card} / ></a>
                                 </Link>)})
                     }
                 </div>
@@ -45,4 +47,4 @@ const CardsPage = (): JSX.Element => {
             
 }
 
-export default withLayout(CardsPage);
+export default withLayout(CharacterCardsPage);

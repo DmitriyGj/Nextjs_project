@@ -1,15 +1,16 @@
-import { ICharacterCard } from './CharacterAPI.model';
-import {ICharacterFullInfo} from '../../ts/CharacterFullInfo'
+import { ICharacter } from './CharacterAPI.model';
+import {ICharacterFullInfo} from '../../ts'
 import { IceAndFireService } from '../IceAndFireAPI/IceAndFireService';
 import {urlHelper} from '../../utilites/urlHelper';
+import { directories } from '../../constants';
 
 const {getId} = urlHelper;
-class CharacterAPIAbs extends IceAndFireService<ICharacterCard, ICharacterFullInfo>{
+class CharactersAPI extends IceAndFireService<ICharacter, ICharacterFullInfo>{
     constructor(){
         super()
     }
-    override directory = 'characters';
-    async getMassiveData(page: number, amount: number): Promise<ICharacterCard[]> {
+    override directory = directories.characters;
+    async getMassiveData(page: number, amount: number): Promise<ICharacter[]> {
         const url = `${this.baseURL}/${this.directory}?page=${page}&pageSize=${amount}`;
 
         try{
@@ -19,12 +20,12 @@ class CharacterAPIAbs extends IceAndFireService<ICharacterCard, ICharacterFullIn
                 throw new Error('Что-то пошло не так');
             }
 
-            const json: ICharacterCard [] = await response.json();
+            const json: ICharacter [] = await response.json();
 
-            const parsedData: ICharacterCard [] = json.map(character => {
+            const parsedData: ICharacter [] = json.map(character => {
                     return {...character, id:getId(character.url,this.baseURL,this.directory)}
                 });
-                
+
             return parsedData;
         }
         catch(e){
@@ -44,11 +45,11 @@ class CharacterAPIAbs extends IceAndFireService<ICharacterCard, ICharacterFullIn
             const json = await response.json();
 
             const parsedData = {...json, 
-                allegiances: json.allegiances.map((allegianceURL: string) => getId(allegianceURL, this.baseURL, 'houses')),
+                allegiances: json.allegiances.map((allegianceURL: string) => getId(allegianceURL, this.baseURL, directories.houses)),
                     spouse: getId(json.spouse, this.baseURL, this.directory),
                     mother: getId(json.mother, this.baseURL, this.directory),
                     father: getId(json.father, this.baseURL, this.directory) ,
-                    books: json.books.map((bookURL:string )=> getId(bookURL, this.baseURL, 'books'))
+                    books: json.books.map((bookURL:string )=> getId(bookURL, this.baseURL, directories.books))
                 };
 
             return parsedData;
@@ -59,4 +60,4 @@ class CharacterAPIAbs extends IceAndFireService<ICharacterCard, ICharacterFullIn
     }
 }
 
-export const CharacterAPI = new CharacterAPIAbs();
+export const CharacterAPI = new CharactersAPI();

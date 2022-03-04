@@ -1,11 +1,13 @@
-import { IFetchParams, IReducerState } from "../ts";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+import { BookAPI } from "../services/BookAPI/BookAPI";
 import { CharacterAPI } from "../services/CharacterAPI/CharacterAPI";
-import { ICharacter } from "../services";
-import { ICharacterFullInfo } from "../ts";
+import { IBook } from "../services";
+import { IBookFullInfo } from "../ts";
+import { IFetchParams } from "../ts/characterSlice.model";
+import { IReducerState } from "../ts";
 
-const initialState: IReducerState<ICharacter,ICharacterFullInfo>  = {
+const initialState: IReducerState<IBook, IBookFullInfo>  = {
     fetchStatus:'needed',
     isLoad:false,
     items:[],
@@ -14,24 +16,24 @@ const initialState: IReducerState<ICharacter,ICharacterFullInfo>  = {
     currentItem: undefined
 };
 
-export const fetchCharacters = createAsyncThunk(
-    'characters/fetchCharacters',
+export const fetchBooks = createAsyncThunk(
+    'books/fetchBooks',
     async (params: IFetchParams) => {
-        const response = await CharacterAPI.getMassiveData(params.page,params.offset);
+        const response = await BookAPI.getMassiveData(params.page,params.offset);
         return response;
     });
 
-export const fetchCharacterInfo =  createAsyncThunk(
-    'characters/fetCharacter',
+export const fetchBookInfo =  createAsyncThunk(
+    'books/getBook',
     async (id: string) => {
-        const response = await CharacterAPI.getFullData(id);
+        const response = await BookAPI.getFullData(id);
         return response;
     }
 )
 
 
-const charactersSlice = createSlice({
-    name:'characters',
+const booksSlice = createSlice({
+    name:'books',
     initialState,
     reducers:{
         toggleIsLoad(state){
@@ -45,25 +47,25 @@ const charactersSlice = createSlice({
         }
     },
     extraReducers:(builder)=>{
-        builder.addCase(fetchCharacters.pending, (state) => {
+        builder.addCase(fetchBooks.pending, (state) => {
             state.fetchStatus = 'pending'
         }),
-        builder.addCase(fetchCharacters.fulfilled, (state, action) => {
+        builder.addCase(fetchBooks.fulfilled, (state, action) => {
             state.fetchStatus = 'fulfilled'
             state.items = [...state.items, ...action.payload]
         }),
-        builder.addCase(fetchCharacters.rejected, (state) => {
+        builder.addCase(fetchBooks.rejected, (state) => {
             state.fetchStatus = 'rejected'
         }),
-        builder.addCase(fetchCharacterInfo.pending, (state) => {
+        builder.addCase(fetchBookInfo.pending, (state) => {
             state.fetchStatus = 'pending';
         }),
-        builder.addCase(fetchCharacterInfo.fulfilled, (state, action) => {
+        builder.addCase(fetchBookInfo.fulfilled, (state, action) => {
             state.fetchStatus = 'fulfilled';
             state.currentItem = action.payload;
         })
     }
 });
 
-export const {toggleIsLoad, incrementPage} =  charactersSlice.actions;
-export default charactersSlice.reducer;
+export const {toggleIsLoad, incrementPage} =  booksSlice.actions;
+export default booksSlice.reducer;

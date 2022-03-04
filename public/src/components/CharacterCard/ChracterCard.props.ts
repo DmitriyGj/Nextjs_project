@@ -1,5 +1,5 @@
-import { ICharacterCard } from '../../services/CharacterAPI/CharacterAPI.model'
+import { ICharacter } from '../../services/index'
 
-export interface ICharacterCardProps extends ICharacterCard{
+export interface ICharacterCardProps extends ICharacter{
 
 }

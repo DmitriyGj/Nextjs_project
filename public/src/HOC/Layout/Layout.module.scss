@@ -2,7 +2,7 @@
     box-sizing:border-box;
     display: grid;
     grid-template-columns: 15% 85%;
-    grid-template-rows: minmax(10%,200px) 1fr ;
+    grid-template-rows: minmax(10%,10vh) 1fr ;
     height: 100vh;
 
 }

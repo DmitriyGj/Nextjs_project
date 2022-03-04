@@ -1,0 +1,17 @@
+.Navigation{
+    margin: 1%;
+    & > *{
+        color: white;
+        font-size: 20px;
+        margin: 20%;
+        display: block;
+    }
+
+    & a:hover {
+        color: rgb(98, 46, 146);
+    }
+}
+
+.fixed{
+    position: fixed ;
+}

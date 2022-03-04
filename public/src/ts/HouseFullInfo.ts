@@ -1,4 +1,4 @@
-import { IHouse } from "../services/IceAndFireAPI/IceAndFire.model"
+import { IHouse } from '../services/HouseAPI/HouseAPI.model';
 
 export interface IHouseFullInfo extends IHouse{
     words: string
@@ -6,7 +6,7 @@ export interface IHouseFullInfo extends IHouse{
     seats: string []
     currentLord: string       //id
     heir: string              //id
-    overlord: string
+    overlord: string          //id
     founded: string
     founder: string           // id
     diedOut: string
