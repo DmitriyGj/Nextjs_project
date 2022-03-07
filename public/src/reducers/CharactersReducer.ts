@@ -29,7 +29,6 @@ export const fetchCharacterInfo =  createAsyncThunk(
     }
 )
 
-
 const charactersSlice = createSlice({
     name:'characters',
     initialState,

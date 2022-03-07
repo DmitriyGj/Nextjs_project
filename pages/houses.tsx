@@ -1,9 +1,9 @@
 import { fetchCharacters, incrementPage } from "../public/src/reducers/CharactersReducer";
-import { getCharacters, getCharactersStoreInfo } from "../public/src/selectors";
+import { getHouses, getHousesStoreInfo } from "../public/src/selectors";
 import {useDispatch, useSelector} from "react-redux";
 import { useEffect, useRef } from "react";
 
-import { ChracterCard } from "../public/src/components/CharacterCard/CharacterCard";
+import {HouseCard} from '../public/src/components/HouseCard/HouseCard';
 import { IFetchParams } from "../public/src/ts";
 import { InteractionObserverStandatrOptions } from "../public/src/constants";
 import Link from "next/link";
@@ -11,9 +11,9 @@ import { Loader } from "../public/src/components/Loader/Loader";
 import {v4 as uuid} from 'uuid';
 import { withLayout } from "../public/src/HOC/Layout/Layout";
 
-const CharacterCardsPage = (): JSX.Element => {
-    const characters = useSelector(getCharacters);
-    const {page, offset, fetchStatus} = useSelector(getCharactersStoreInfo);
+const HousesPage = (): JSX.Element => {
+    const houses = useSelector(getHouses);
+    const {page, offset, fetchStatus} = useSelector(getHousesStoreInfo);
     const dispatch = useDispatch();
     const loadTarget = useRef(null);
 
@@ -43,11 +43,11 @@ const CharacterCardsPage = (): JSX.Element => {
 
 
     return(<div>
-                <h1>Chraracter&apos;s List</h1>
+                <h1>House&apos;s List</h1>
                 <div>
-                    {characters && characters.map(card =>{ 
-                        return (<Link href={`/characters/${card.id}`} key = {uuid()}>
-                                    <a>< ChracterCard  {...card} / ></a>
+                    {houses && houses.map(card =>{ 
+                        return (<Link href={`/houses/${card.id}`} key = {uuid()}>
+                                    <a>< HouseCard  {...card} / ></a>
                                 </Link>)})
                     }
                 </div>
@@ -56,4 +56,4 @@ const CharacterCardsPage = (): JSX.Element => {
             
 }
 
-export default withLayout(CharacterCardsPage);
+export default withLayout(HousesPage);

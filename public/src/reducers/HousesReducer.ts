@@ -1,13 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import { BookAPI } from "../services";
-import { CharacterAPI } from "../services";
-import { IBook } from "../services";
-import { IBookFullInfo } from "../ts";
-import { IFetchParams } from "../ts";
+import { HouseAPI } from "../services";
+import { IFetchParams } from "../ts/IFetchParams.model";
+import { IHouse } from "../services";
+import { IHouseFullInfo } from "../ts";
 import { IReducerState } from "../ts";
 
-const initialState: IReducerState<IBook, IBookFullInfo>  = {
+const initialState: IReducerState<IHouse, IHouseFullInfo>  = {
     fetchStatus:'needed',
     isLoad:false,
     items:[],
@@ -16,24 +15,24 @@ const initialState: IReducerState<IBook, IBookFullInfo>  = {
     currentItem: undefined
 };
 
-export const fetchBooks = createAsyncThunk(
-    'books/fetchBooks',
+export const fetchHouses = createAsyncThunk(
+    'houses/fetchHouses',
     async (params: IFetchParams) => {
-        const response = await BookAPI.getMassiveData(params.page,params.offset);
+        const response = await HouseAPI.getMassiveData(params.page,params.offset);
         return response;
     });
 
-export const fetchBookInfo =  createAsyncThunk(
-    'books/getBook',
+export const fetchHouseInfo =  createAsyncThunk(
+    'houses/fetchHouse',
     async (id: string) => {
-        const response = await BookAPI.getFullData(id);
+        const response = await HouseAPI.getFullData(id);
         return response;
     }
 )
 
 
-const booksSlice = createSlice({
-    name:'books',
+const housesSlice = createSlice({
+    name:'houses',
     initialState,
     reducers:{
         toggleIsLoad(state){
@@ -47,25 +46,25 @@ const booksSlice = createSlice({
         }
     },
     extraReducers:(builder)=>{
-        builder.addCase(fetchBooks.pending, (state) => {
+        builder.addCase(fetchHouses.pending, (state) => {
             state.fetchStatus = 'pending'
         }),
-        builder.addCase(fetchBooks.fulfilled, (state, action) => {
+        builder.addCase(fetchHouses.fulfilled, (state, action) => {
             state.fetchStatus = 'fulfilled'
             state.items = [...state.items, ...action.payload]
         }),
-        builder.addCase(fetchBooks.rejected, (state) => {
+        builder.addCase(fetchHouses.rejected, (state) => {
             state.fetchStatus = 'rejected'
         }),
-        builder.addCase(fetchBookInfo.pending, (state) => {
+        builder.addCase(fetchHouseInfo.pending, (state) => {
             state.fetchStatus = 'pending';
         }),
-        builder.addCase(fetchBookInfo.fulfilled, (state, action) => {
+        builder.addCase(fetchHouseInfo.fulfilled, (state, action) => {
             state.fetchStatus = 'fulfilled';
             state.currentItem = action.payload;
         })
     }
 });
 
-export const {toggleIsLoad, incrementPage} =  booksSlice.actions;
-export default booksSlice.reducer;
+export const {toggleIsLoad, incrementPage} =  housesSlice.actions;
+export default housesSlice.reducer;
