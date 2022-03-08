@@ -1,5 +1,7 @@
+import { FetchStatus } from "../constants/FetchStatus"
+
 export interface IReducerState<T,F> {
-    fetchStatus: 'needed' | 'fulfilled' | 'rejected' | 'pending'
+    fetchStatus: FetchStatus
     isLoad:boolean
     items: T[]
     page: number

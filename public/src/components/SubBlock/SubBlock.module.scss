@@ -11,4 +11,13 @@
         margin: 0px;
         padding: 0px;
     }
+
+    *:not(:last-child):after{
+        content: ' , ';
+    }
+
+    a:hover{
+        text-decoration: underline;
+        color: purple
+    }
 }

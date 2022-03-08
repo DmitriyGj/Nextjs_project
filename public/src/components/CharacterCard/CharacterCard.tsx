@@ -1,12 +1,12 @@
 import { ICharacterCardProps } from "./ChracterCard.props";
-import style from './CharacterCard.module.scss'
+import style from './CharacterCard.module.scss';
 
 const ChracterCard = ({name, gender, culture}: ICharacterCardProps): JSX.Element => {
-    return(<div className = {style.CharacterCard} >
+    return(<div className={style.CharacterCard} >
             <p>Имя: {name}</p>
             <p>Пол: {gender}</p>
             <p>Культура: {culture}</p>
-        </div>)
-}
+        </div>);
+};
 
 export {ChracterCard};

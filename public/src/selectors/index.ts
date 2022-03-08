@@ -4,4 +4,4 @@ import { getHouseFullInfo, getHouses, getHousesStoreInfo } from "./housesSelecto
 
 export {getBookFullInfo, getBooks, getBooksStoreInfo, 
     getCharacters, getCharacterFullInfo, getCharactersStoreInfo,
-    getHouseFullInfo, getHouses, getHousesStoreInfo}
+    getHouseFullInfo, getHouses, getHousesStoreInfo};

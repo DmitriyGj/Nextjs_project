@@ -6,4 +6,4 @@ import { ICharacter } from './CharacterAPI/CharacterAPI.model';
 import { IHouse } from './HouseAPI/HouseAPI.model';
 
 export {CharacterAPI,BookAPI, HouseAPI };
-export type {ICharacter, IBook, IHouse}
+export type {ICharacter, IBook, IHouse};

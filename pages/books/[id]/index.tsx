@@ -7,6 +7,7 @@ import { fetchBookInfo } from "../../../public/src/reducers/BooksReducer";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { withLayout } from "../../../public/src/HOC/Layout/Layout";
+import { FetchStatus } from "../../../public/src/constants";
 
 const BookPage = () => {
     const router = useRouter();
@@ -19,14 +20,14 @@ const BookPage = () => {
         if(id){
             dispatch(fetchBookInfo(id as string));
         }
-    },[id])
+    },[id]);
     
     return(<div>
-            {fetchStatus === 'fulfilled' && characterInfo && <BookBlock {...characterInfo} />}
-            {fetchStatus === 'pending' && <Loader/>}
-            {fetchStatus === 'rejected' && <p>Что-то пошло не так, не удалось получить информацию</p>}
-        </div>)
-}
+            {fetchStatus === FetchStatus.Fulfilled && characterInfo && <BookBlock {...characterInfo} />}
+            {fetchStatus === FetchStatus.Pending  && <Loader />}
+            {fetchStatus === FetchStatus.Rejected && <p>Что-то пошло не так, не удалось получить информацию</p>}
+        </div>);
+};
 
 export default withLayout(BookPage);
 

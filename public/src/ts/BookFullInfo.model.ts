@@ -1,4 +1,5 @@
-import {IBook} from '../services/BookAPI/BookAPI.model';
+import {IBook, IBookResponseInfo} from '../services/BookAPI/BookAPI.model';
+import { ICharacter } from '../services';
 
 export interface IBookFullInfo extends IBook {
     isbn: string
@@ -7,6 +8,6 @@ export interface IBookFullInfo extends IBook {
     country: string
     mediaType: string
     released: string
-    characters: string [] //ids
-    povCharacters: string [] //ids
+    characters: ICharacter [] //ids
+    povCharacters: ICharacter [] //ids
 }

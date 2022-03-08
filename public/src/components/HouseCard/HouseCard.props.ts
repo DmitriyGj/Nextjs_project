@@ -1,4 +1,4 @@
-import { IHouse } from '../../services'
+import { IHouse } from '../../services';
 
 export interface IHouseCardProps extends IHouse{
 

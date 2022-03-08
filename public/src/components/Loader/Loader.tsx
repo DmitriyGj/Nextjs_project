@@ -1,7 +1,7 @@
-import style from './Loader.module.scss'
+import style from './Loader.module.scss';
 
 export const Loader = () => {
     return(<div className={style.Loader}>
-            <span></span>
-        </div>)
+            <span />
+        </div>);
 };

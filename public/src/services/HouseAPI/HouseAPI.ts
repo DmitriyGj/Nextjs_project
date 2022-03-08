@@ -8,12 +8,11 @@ const {getId} = urlHelper;
 
 class HousesAPI extends IceAndFireService<IHouse,IHouseFullInfo>{
     constructor(){
-        super()
+        super();
     }
     override directory = directories.houses;
     async getMassiveData(page: number, amount: number): Promise<IHouse[]> {
         const url = `${this.baseURL}/${this.directory}?page=${page}&pageSize=${amount}`;
-
         try{
             const response = await fetch(url);
 
@@ -24,13 +23,12 @@ class HousesAPI extends IceAndFireService<IHouse,IHouseFullInfo>{
             const json: IHouse [] = await response.json();
 
             const parsedData: IHouse [] = json.map(house => {
-                    return {...house, id:getId(house.url,this.baseURL,this.directory)}
+                    return {...house, id:getId(house.url,this.baseURL,this.directory)};
                 });
-
             return parsedData;
         }
         catch(e){
-            throw new Error('Чел тут жесть')
+            throw new Error('Чел тут жесть');
         }
     }
 

@@ -5,9 +5,10 @@ import { IFetchParams } from "../ts/IFetchParams.model";
 import { IHouse } from "../services";
 import { IHouseFullInfo } from "../ts";
 import { IReducerState } from "../ts";
+import { FetchStatus } from "../constants/FetchStatus";
 
 const initialState: IReducerState<IHouse, IHouseFullInfo>  = {
-    fetchStatus:'needed',
+    fetchStatus: FetchStatus.Needed,
     isLoad:false,
     items:[],
     page:1,
@@ -28,7 +29,7 @@ export const fetchHouseInfo =  createAsyncThunk(
         const response = await HouseAPI.getFullData(id);
         return response;
     }
-)
+);
 
 
 const housesSlice = createSlice({
@@ -47,22 +48,22 @@ const housesSlice = createSlice({
     },
     extraReducers:(builder)=>{
         builder.addCase(fetchHouses.pending, (state) => {
-            state.fetchStatus = 'pending'
+            state.fetchStatus = FetchStatus.Pending;
         }),
         builder.addCase(fetchHouses.fulfilled, (state, action) => {
-            state.fetchStatus = 'fulfilled'
-            state.items = [...state.items, ...action.payload]
+            state.fetchStatus = FetchStatus.Fulfilled;
+            state.items = [...state.items, ...action.payload];
         }),
         builder.addCase(fetchHouses.rejected, (state) => {
-            state.fetchStatus = 'rejected'
+            state.fetchStatus = FetchStatus.Rejected;
         }),
         builder.addCase(fetchHouseInfo.pending, (state) => {
-            state.fetchStatus = 'pending';
+            state.fetchStatus = FetchStatus.Pending;
         }),
         builder.addCase(fetchHouseInfo.fulfilled, (state, action) => {
-            state.fetchStatus = 'fulfilled';
+            state.fetchStatus = FetchStatus.Fulfilled;
             state.currentItem = action.payload;
-        })
+        });
     }
 });
 

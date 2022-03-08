@@ -1,13 +1,14 @@
 import { IceAndFireService } from '../IceAndFireAPI/IceAndFireService';
-import {IBook} from './BookAPI.model';
+import {IBook , IBookResponseInfo} from './BookAPI.model';
 import {IBookFullInfo} from '../../ts';
 import {urlHelper} from '../../utilites/urlHelper';
 import { directories } from '../../constants';
+import { CharacterAPI } from '../';
 
 const {getId} = urlHelper;
 class BooksAPI extends IceAndFireService<IBook,IBookFullInfo>{
     constructor(){
-        super()
+        super();
     }
     override directory = directories.books;
     async getMassiveData(page: number, amount: number): Promise<IBook[]> {
@@ -23,13 +24,13 @@ class BooksAPI extends IceAndFireService<IBook,IBookFullInfo>{
             const json: IBook [] = await response.json();
 
             const parsedData: IBook [] = json.map(book => {
-                    return {...book, id:getId(book.url,this.baseURL,this.directory)}
+                    return {...book, id:getId(book.url,this.baseURL,this.directory)};
                 });
 
             return parsedData;
         }
         catch(e){
-            throw new Error('Чел тут жесть')
+            throw new Error('Чел тут жесть');
         }
     }
 
@@ -42,12 +43,20 @@ class BooksAPI extends IceAndFireService<IBook,IBookFullInfo>{
                 throw new Error('Что-то пошло не так');
             }
 
-            const json: IBookFullInfo = await response.json();
+            const json: IBookResponseInfo = await response.json();
+
+            const characterPromises = json.characters.map(async character => {
+                return await CharacterAPI.getBaseDataById(getId(character, this.baseURL, directories.characters))
+            });
+
+            const povChracterPromises = json.povCharacters.map(async character => {
+                return await CharacterAPI.getBaseDataById(getId(character, this.baseURL, directories.characters))
+            });
 
             const parsedData: IBookFullInfo = {...json, 
-                characters: json.characters.map(character => getId(character, this.baseURL, directories.characters)),
-                povCharacters: json.povCharacters.map((character: string) => getId(character, this.baseURL, directories.characters))
-                };
+                characters: await Promise.all(characterPromises),
+                povCharacters: await Promise.all(povChracterPromises)
+            };
 
             return parsedData;
         }   

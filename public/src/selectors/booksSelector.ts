@@ -13,4 +13,4 @@ export const getBooksStoreInfo = (state: RootState) => {
 export const getBookFullInfo = (state : RootState) => {
     const {currentItem: currentBook} = state.books;
     return currentBook;
-}
+};

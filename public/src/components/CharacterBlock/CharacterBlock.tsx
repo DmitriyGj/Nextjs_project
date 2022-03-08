@@ -26,12 +26,12 @@ export const CharacterBlock = ({name,
             {<p>Spouse:{spouse || '-'}</p>}
             {(father || mother) && <p>Parents:{father} {mother}</p>}
             
-            <SubBlock title = 'Titles' content = {titles}/>
-            <SubBlock title = 'Aliases' content = {aliases}/>
-            <SubBlock title = 'Allegiances' content = {allegiances} />
-            <SubBlock title = 'Books' content = {books}/>
-            <SubBlock title = 'povBooks' content = {povBooks}/>            
-            <SubBlock title = 'Played by' content = {playedBy}/>
+            <SubBlock title='Titles' content={titles} />
+            <SubBlock title='Aliases' content={aliases} />
+            <SubBlock title='Allegiances' content={allegiances} />
+            <SubBlock title='Books' content={books} />
+            <SubBlock title='povBooks' content={povBooks} />            
+            <SubBlock title='Played by' content={playedBy} />
         </div>
-    )
-}
+    );
+};

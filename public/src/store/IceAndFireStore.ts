@@ -1,6 +1,6 @@
 import {BooksReducer} from '../reducers';
-import {CharactersReducer} from  '../reducers'
-import {HousesReducer} from '../reducers'
+import {CharactersReducer} from  '../reducers';
+import {HousesReducer} from '../reducers';
 import { configureStore } from "@reduxjs/toolkit";
 
 export const IceAndFireStore = configureStore(

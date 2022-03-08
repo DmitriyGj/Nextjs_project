@@ -1,12 +1,12 @@
 import { IFetchParams, IReducerState } from "../ts";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-
+import { FetchStatus } from "../constants/FetchStatus";
 import { CharacterAPI } from "../services/CharacterAPI/CharacterAPI";
 import { ICharacter } from "../services";
 import { ICharacterFullInfo } from "../ts";
 
 const initialState: IReducerState<ICharacter,ICharacterFullInfo>  = {
-    fetchStatus:'needed',
+    fetchStatus: FetchStatus.Needed,
     isLoad:false,
     items:[],
     page:1,
@@ -27,7 +27,7 @@ export const fetchCharacterInfo =  createAsyncThunk(
         const response = await CharacterAPI.getFullData(id);
         return response;
     }
-)
+);
 
 const charactersSlice = createSlice({
     name:'characters',
@@ -45,22 +45,22 @@ const charactersSlice = createSlice({
     },
     extraReducers:(builder)=>{
         builder.addCase(fetchCharacters.pending, (state) => {
-            state.fetchStatus = 'pending'
+            state.fetchStatus = FetchStatus.Pending;
         }),
         builder.addCase(fetchCharacters.fulfilled, (state, action) => {
-            state.fetchStatus = 'fulfilled'
-            state.items = [...state.items, ...action.payload]
+            state.fetchStatus = FetchStatus.Fulfilled;
+            state.items = [...state.items, ...action.payload];
         }),
         builder.addCase(fetchCharacters.rejected, (state) => {
-            state.fetchStatus = 'rejected'
+            state.fetchStatus = FetchStatus.Rejected;
         }),
         builder.addCase(fetchCharacterInfo.pending, (state) => {
-            state.fetchStatus = 'pending';
+            state.fetchStatus = FetchStatus.Pending;
         }),
         builder.addCase(fetchCharacterInfo.fulfilled, (state, action) => {
-            state.fetchStatus = 'fulfilled';
+            state.fetchStatus = FetchStatus.Fulfilled;
             state.currentItem = action.payload;
-        })
+        });
     }
 });
 

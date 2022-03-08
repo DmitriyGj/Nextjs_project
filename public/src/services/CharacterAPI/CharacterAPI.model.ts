@@ -1,4 +1,4 @@
-export interface ICharacter {
+export interface ICharacter  {
     url:string
     id:string
     name:string
