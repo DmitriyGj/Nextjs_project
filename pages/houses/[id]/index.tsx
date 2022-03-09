@@ -1,15 +1,16 @@
+import { getHouseFullInfo, getHousesStoreInfo } from "../../../public/src/selectors";
 import { useDispatch, useSelector } from "react-redux";
-import { getHousesStoreInfo, getHouseFullInfo } from "../../../public/src/selectors";
 
+import { FetchStatus } from "../../../public/src/constants";
 import { HouseBlock } from "../../../public/src/components/HouseBlock/HouseBlock";
 import { Loader } from "../../../public/src/components/Loader/Loader";
 import { fetchHouseInfo } from '../../../public/src/reducers'
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { FetchStatus } from "../../../public/src/constants";
 import { withLayout } from "../../../public/src/HOC/Layout/Layout";
+import { wrapper } from "../../../public/src/HOC/ReduxWeapper/ReduxWrapper";
 
-const CharacterPage = () =>{
+const HousePage = () =>{
     const router = useRouter();
     const {id} = router.query;
     const dispatch = useDispatch();
@@ -17,9 +18,10 @@ const CharacterPage = () =>{
     const houseInfo= useSelector(getHouseFullInfo);
 
     useEffect(()=>{
-        if(id){
-            dispatch(fetchHouseInfo(id as string));
+        if(!id){
+            return;
         }
+        dispatch(fetchHouseInfo(id as string));
     },[id]);
 
     return(
@@ -31,4 +33,12 @@ const CharacterPage = () =>{
     );
 };
 
-export default withLayout(CharacterPage);
+HousePage.getInititalProps = wrapper.getInitialPageProps(
+    ({dispatch}) => async() =>{
+        const router = useRouter();
+        const {id} = router.query;
+        await dispatch(fetchHouseInfo(id?.toString() || '1'));
+    }
+);
+
+export default withLayout(HousePage);

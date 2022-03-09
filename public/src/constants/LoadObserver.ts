@@ -1,6 +1,6 @@
-import { InteractionObserverStandatrOptions } from "./InteractionObserver";
-import { Dispatch } from "react";
 import { Action } from "@reduxjs/toolkit";
+import { Dispatch } from "react";
+import { InteractionObserverStandatrOptions } from "./InteractionObserver";
 
 export interface observerProps{
     flag:boolean

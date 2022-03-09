@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { GetStaticPaths } from "next";
 import { Header } from "./Header/Header";
 import { LayoutProps } from "./Layout.props";
 import { NavigationMenu } from "../../components/NavigationMenu/NavigationMenu";
@@ -21,6 +22,10 @@ const Layout = ({children} : LayoutProps) => {
         </div>
     );
 };
+
+Layout.GetStaticPaths = () =>{
+    
+}
 
 export const withLayout = <T extends Record<string, unknown>>(Component: FC<T>) => {
 	return function withLayoutComponent(props: T): JSX.Element {

@@ -1,16 +1,22 @@
-import { fetchHouses, incrementPage } from "../public/src/reducers/HousesReducer";
-import { getHouses, getHousesStoreInfo } from "../public/src/selectors";
+import { HouseAPI, IHouse } from "../../public/src/services";
+import { fetchHouses, incrementPage } from "../../public/src/reducers/HousesReducer";
+import { getHouses, getHousesStoreInfo } from "../../public/src/selectors";
 import {useDispatch, useSelector} from "react-redux";
 import { useEffect, useRef } from "react";
 
-import {HouseCard} from '../public/src/components/HouseCard/HouseCard';
-import { IFetchParams } from "../public/src/ts";
-import { InteractionObserverStandatrOptions } from "../public/src/constants";
+import { FetchStatus } from "../../public/src/constants/FetchStatus";
+import { GetServerSideProps } from "next";
+import {HouseCard} from '../../public/src/components/HouseCard/HouseCard';
+import { IFetchParams } from "../../public/src/ts";
 import Link from "next/link";
-import { Loader } from "../public/src/components/Loader/Loader";
-import { withLayout } from "../public/src/HOC/Layout/Layout";
-import { wrapper } from "../public/src/HOC/ReduxWeapper/ReduxWrapper";
-import { FetchStatus } from "../public/src/constants/FetchStatus";
+import { Loader } from "../../public/src/components/Loader/Loader";
+import { createObserver } from "../../public/src/constants/LoadObserver";
+import { withLayout } from "../../public/src/HOC/Layout/Layout";
+import { wrapper } from "../../public/src/HOC/ReduxWeapper/ReduxWrapper";
+
+interface HousesPageProps{
+    houses: IHouse[]
+}
 
 const HousesPage = (): JSX.Element => {
     const houses = useSelector(getHouses);
@@ -19,17 +25,16 @@ const HousesPage = (): JSX.Element => {
     const loadTarget = useRef(null);
 
     useEffect(()=>{     
-        const interactionHandle = (entries:IntersectionObserverEntry[]) => {
-            entries.forEach(entrie => {
-                if(fetchStatus !== FetchStatus.Pending && entrie.isIntersecting && entrie.intersectionRatio > 0.95){
-                    dispatch(incrementPage());
-                }
-            });
-        };
-        const observer = new IntersectionObserver(interactionHandle, InteractionObserverStandatrOptions);
+        const observer = createObserver(fetchStatus !== FetchStatus.Pending, () => dispatch(incrementPage()));
+
         if(loadTarget.current){
             observer.observe(loadTarget.current);
         }
+        
+        if(fetchStatus === FetchStatus.Ended && loadTarget.current){
+            observer.unobserve(loadTarget.current)
+        }
+
         return() =>{ 
             if(loadTarget.current){
                 observer.unobserve(loadTarget.current);
@@ -57,10 +62,19 @@ const HousesPage = (): JSX.Element => {
             
 };
 
-HousesPage.getInitialPageProps = wrapper.getInitialPageProps(
+HousesPage.getInitialProps = wrapper.getInitialPageProps(
     ({dispatch}) => async() => {
-        return await dispatch(fetchHouses({page:1,offset:10}));
+        await dispatch(fetchHouses({page:1,offset:10}));
     }
 );
+
+export const  getServerSideProps: GetServerSideProps<HousesPageProps> = async (ctx) => {
+    const res = await HouseAPI.getMassiveData(1,10);
+    return {
+        props: {
+            houses:res
+        }
+    }
+} 
 
 export default withLayout(HousesPage);

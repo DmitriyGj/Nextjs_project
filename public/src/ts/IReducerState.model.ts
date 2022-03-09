@@ -6,6 +6,6 @@ export interface IReducerState<T,F> {
     items: T[]
     page: number
     offset: number
-    currentItem: F | undefined
+    currentItem: F | null
 }
 

@@ -1,7 +1,7 @@
 import { IBookBlockProps } from "./BookBlock.props";
+import { LinkedSubBlock } from "../SubBlock/SubBlock";
 import { SubBlock } from "../SubBlock/SubBlock";
 import style from './BookBlock.module.scss';
-import { LinkedSubBlock } from "../SubBlock/SubBlock";
 
 export const BookBlock = ({name,
                         authors,

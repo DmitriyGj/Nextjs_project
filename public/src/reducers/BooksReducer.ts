@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import { BookAPI } from "../services";
+import { FetchStatus } from "../constants/FetchStatus";
 import { IBook } from "../services";
 import { IBookFullInfo } from "../ts";
 import { IFetchParams } from "../ts";
 import { IReducerState } from "../ts";
-import { FetchStatus } from "../constants/FetchStatus";
 
 const initialState: IReducerState<IBook, IBookFullInfo>  = {
     fetchStatus: FetchStatus.Needed,
@@ -13,7 +13,7 @@ const initialState: IReducerState<IBook, IBookFullInfo>  = {
     items:[],
     page:1,
     offset: 10,
-    currentItem: undefined
+    currentItem: null
 };
 
 export const fetchBooks = createAsyncThunk(
@@ -52,10 +52,12 @@ const booksSlice = createSlice({
         }),
         builder.addCase(fetchBooks.fulfilled, (state, action) => {
             state.fetchStatus = FetchStatus.Fulfilled;
-            if(action.payload.length === 0){
+            if(!action.payload){
                 state.fetchStatus = FetchStatus.Ended;
             }
-            state.items = [...state.items, ...action.payload];
+            else{
+                state.items = [...state.items, ...action.payload];
+            }
         }),
         builder.addCase(fetchBooks.rejected, (state) => {
             state.fetchStatus = FetchStatus.Rejected;
