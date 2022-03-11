@@ -18,4 +18,4 @@ export const createObserver = (flag: boolean, handler: () => void)=>{
     const observer = new IntersectionObserver(interactionHandle, InteractionObserverStandatrOptions);
 
     return observer;
-}
+};

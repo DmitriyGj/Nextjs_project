@@ -1,10 +1,10 @@
 import '../styles/globals.css';
+import { withLayout } from '../public/src/HOC/Layout/Layout';
 
 import type { AppProps } from 'next/app';
-import { wrapper } from '../public/src/HOC/ReduxWeapper/ReduxWrapper';
 
 const MyApp = ({ Component, pageProps }: AppProps)  =>
-          (<Component {...pageProps} />);
+        (<Component {...pageProps} />);
 
 
-export default wrapper.withRedux(MyApp);
+export default withLayout(MyApp);

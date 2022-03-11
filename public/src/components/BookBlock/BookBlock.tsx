@@ -1,4 +1,5 @@
 import { IBookBlockProps } from "./BookBlock.props";
+import { IBookFullInfo } from "../../ts";
 import { LinkedSubBlock } from "../SubBlock/SubBlock";
 import { SubBlock } from "../SubBlock/SubBlock";
 import style from './BookBlock.module.scss';
@@ -12,7 +13,7 @@ export const BookBlock = ({name,
                         mediaType,
                         released, 
                         characters, 
-                        povCharacters}: IBookBlockProps) => {
+                        povCharacters}: IBookFullInfo) => {
     return(
         <div className={style.main}>
             <p>Name: {name}</p>
@@ -25,8 +26,8 @@ export const BookBlock = ({name,
             <SubBlock title='Authors' content={authors} />
             
             <LinkedSubBlock orientation='horizontal' 
-                            title='Characters'
-                            content={characters} 
+                            title='Characters' 
+                            content={characters}
                             miniCardTypeEntriy='characters' />
             
             <LinkedSubBlock orientation='horizontal'

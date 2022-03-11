@@ -1,6 +1,6 @@
 import { ICharacter } from './CharacterAPI.model';
 import {ICharacterFullInfo} from '../../ts';
-import { IceAndFireService } from '../IceAndFireAPI/IceAndFireService';
+import { IceAndFireService } from '../IceAndFireAPI/IceAndFireService.model';
 import {urlHelper} from '../../utilites/urlHelper';
 import { directories } from '../../constants';
 
@@ -12,7 +12,6 @@ class CharactersAPI extends IceAndFireService<ICharacter, ICharacterFullInfo>{
     override directory = directories.characters;
     async getMassiveData(page: number, amount: number): Promise<ICharacter[]> {
         const url = `${this.baseURL}/${this.directory}?page=${page}&pageSize=${amount}`;
-
         try{
             const response = await fetch(url);
 
@@ -21,7 +20,6 @@ class CharactersAPI extends IceAndFireService<ICharacter, ICharacterFullInfo>{
             }
 
             const json: ICharacter [] = await response.json();
-
             const parsedData: ICharacter [] = json.map(character => {
                     return {...character, id:getId(character.url,this.baseURL,this.directory)};
                 });
@@ -29,7 +27,7 @@ class CharactersAPI extends IceAndFireService<ICharacter, ICharacterFullInfo>{
             return parsedData;
         }
         catch(e){
-            throw new Error('Чел тут жесть');
+            throw new Error('Чел тут жесть') ;
         }
     }
 

@@ -1,11 +1,9 @@
 {
   "extends": "next/core-web-vitals",
   "rules": {
-    "jsx-quotes": ["error", "single"],
+    "jsx-quotes": ["error", "prefer-single"],
     "react/jsx-boolean-value": "error",
-    "react/jsx-curly-spacing": ["error", "never"],
     "react/jsx-equals-spacing": ["error", "never"],
-    "react/jsx-indent-props": ["error", 2],
     "react/jsx-no-duplicate-props": "error",
     "react/jsx-no-undef": "error",
     "react/jsx-tag-spacing": ["error", { "beforeSelfClosing": "always" }],

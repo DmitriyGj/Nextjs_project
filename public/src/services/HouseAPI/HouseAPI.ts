@@ -1,4 +1,4 @@
-import { IceAndFireService } from '../IceAndFireAPI/IceAndFireService';
+import { IceAndFireService } from '../IceAndFireAPI/IceAndFireService.model';
 import {urlHelper} from '../../utilites/urlHelper';
 import { IHouse } from './HouseAPI.model';
 import { IHouseFullInfo } from '../../ts';

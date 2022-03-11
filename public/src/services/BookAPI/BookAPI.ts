@@ -1,7 +1,7 @@
-import { IceAndFireService } from '../IceAndFireAPI/IceAndFireService';
-import {IBook , IBookResponseInfo} from './BookAPI.model';
-import {IBookFullInfo} from '../../ts';
-import {urlHelper} from '../../utilites/urlHelper';
+import { IceAndFireService } from '../IceAndFireAPI/IceAndFireService.model';
+import { IBook , IBookResponseInfo } from './BookAPI.model';
+import { IBookFullInfo } from '../../ts';
+import { urlHelper } from '../../utilites/urlHelper';
 import { directories } from '../../constants';
 import { CharacterAPI } from '../';
 
@@ -13,7 +13,6 @@ class BooksAPI extends IceAndFireService<IBook,IBookFullInfo>{
     override directory = directories.books;
     async getMassiveData(page: number, amount: number): Promise<IBook[]> {
         const url = `${this.baseURL}/${this.directory}?page=${page}&pageSize=${amount}`;
-
         try{
             const response = await fetch(url);
 
@@ -46,11 +45,11 @@ class BooksAPI extends IceAndFireService<IBook,IBookFullInfo>{
             const json: IBookResponseInfo = await response.json();
 
             const characterPromises = json.characters.map(async character => {
-                return await CharacterAPI.getBaseDataById(getId(character, this.baseURL, directories.characters))
+                return await CharacterAPI.getBaseDataById(getId(character, this.baseURL, directories.characters));
             });
 
             const povChracterPromises = json.povCharacters.map(async character => {
-                return await CharacterAPI.getBaseDataById(getId(character, this.baseURL, directories.characters))
+                return await CharacterAPI.getBaseDataById(getId(character, this.baseURL, directories.characters));
             });
 
             const parsedData: IBookFullInfo = {...json, 

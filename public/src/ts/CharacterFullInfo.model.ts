@@ -1,4 +1,4 @@
-import {ICharacter} from '../services/CharacterAPI/CharacterAPI.model'
+import {ICharacter} from '../services/CharacterAPI/CharacterAPI.model';
 
 export interface ICharacterFullInfo extends ICharacter{
     born: string

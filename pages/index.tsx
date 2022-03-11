@@ -1,6 +1,5 @@
 import type { NextPage } from 'next';
 import styles from '../styles/Home.module.css';
-import { withLayout } from '../public/src/HOC/Layout/Layout';
 
 const Home: NextPage = () => {
   return (
@@ -10,4 +9,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default withLayout(Home);
+export default Home;
