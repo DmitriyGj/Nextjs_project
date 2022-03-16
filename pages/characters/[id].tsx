@@ -1,15 +1,13 @@
 import { CharacterAPI } from '../../public/src/services';
 import {CharacterBlock} from '../../public/src/components/CharacterBlock/CharacterBlock';
 import { GetServerSideProps } from 'next';
-import { ICharacterFullInfo } from '../../public/src/ts';
-import { withLayout } from '../../public/src/HOC/Layout/Layout';
+import { wrapper } from '../../public/src/store/IceAndFireStore';
+import { setCurrentCharacter } from '../../public/src/slices/characters';
+import { useAppSelector } from '../../public/src/store/hooks';
+import { getCurrentCharacter } from '../../public/src/selectors/characters';
 
-interface ICharacterPageProps extends Record<string, unknown>{
-    characterInfo: ICharacterFullInfo
-}
-
-const CharacterPage = ({ characterInfo } : ICharacterPageProps) =>{
-
+const CharacterPage = () =>{
+    const characterInfo = useAppSelector(getCurrentCharacter);
     return(
         <div>
             <CharacterBlock {...characterInfo} />
@@ -17,14 +15,27 @@ const CharacterPage = ({ characterInfo } : ICharacterPageProps) =>{
     );
 };
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    const { id } = ctx.query;
-    if(!id ){
-        return {props: { characterInfo: {}}};
+export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(store => async (ctx) => {
+    try{
+        const  id  = ctx.query.id as string;
+        if(!id ){
+            return {notFound: true};
+        }
+
+        const characterInfo = await CharacterAPI.getFullData(id);
+        if(!characterInfo){
+            return { notFound: true };
+        }
+
+        store.dispatch(setCurrentCharacter(characterInfo));
+        return { props: { characterInfo } };
     }
-    const characterInfo = await CharacterAPI.getFullData(id.toString());
-    return {props: { characterInfo } };
-};
+    catch(e){
+        console.log(e);
+        store.dispatch(setCurrentCharacter(null));
+        return { notFound: true };
+    }
+});
 
 
 

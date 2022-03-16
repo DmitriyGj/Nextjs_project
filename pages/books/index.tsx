@@ -1,36 +1,40 @@
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef } from 'react';
 
-import { BookAPI } from "../../public/src/services";
 import { BookCard } from "../../public/src/components/BookCard/BookCard";
 import { GetStaticProps } from "next";
-import { IBook } from '../../public/src/services';
-import { IBookCardProps } from "../../public/src/components/BookCard/BookCard.props";
 import Link from "next/link";
-import { createObserver } from '../../public/src/constants';
-import { withLayout } from "../../public/src/HOC/Layout/Layout";
-import { offset, initPage} from '../../public/src/constants';
-interface BooksPageProps extends Record<string,unknown> {
-    books: IBookCardProps[]
-}
+import { createObserver, FetchStatus } from '../../public/src/constants';
+import { RootState, wrapper } from '../../public/src/store/IceAndFireStore';
+import { useSelector } from 'react-redux';
 
-export const BooksPage = ({books} : BooksPageProps) => { 
-    const [page, setPage] = useState<number>(2);
-    const [fetchedCards, setFetchedCards] = useState<IBook[]>(books);
+import { IBookCardProps } from '../../public/src/components/BookCard/BookCard.props';
+import { clearBooks, incrementPage } from '../../public/src/slices/books';
+import { useAppDispatch, useAppSelector } from '../../public/src/store/hooks';
+import { getBooks, getPage } from '../../public/src/selectors/books';
+import { fetchBooks } from '../../public/src/slices/books';
+
+export const BooksPage = ( ) => { 
+    const books = useAppSelector(getBooks);
+    const { fetchStatus } = useSelector((state: RootState) => state.books);
+    const page: number = useAppSelector(getPage);
     const loadTarget = useRef(null);
-
-    useEffect(() =>{
-        (async() => {
-            const newCards = await BookAPI.getMassiveData(page,offset);
-            setFetchedCards([...fetchedCards,...newCards]);
-        })();
-    }, 
-    [page]);
+    const dispatch = useAppDispatch();
+    
 
     useEffect(() => {
         const { current } = loadTarget;
-        const observer = createObserver(true, () => {setPage(page+1);});
+        const observer = createObserver(true, () =>  {
+                if(fetchStatus !== FetchStatus.Ended){
+                    dispatch(incrementPage(null));
+                }
+        });
+
         if(current){
             observer.observe(current);
+        }
+
+        if(fetchStatus === FetchStatus.Ended && current){
+            observer.unobserve(current);
         }
 
         return() =>{
@@ -40,31 +44,38 @@ export const BooksPage = ({books} : BooksPageProps) => {
         };
     });
 
+    useEffect(() => { ( async () => {
+        try{
+            dispatch(fetchBooks(page));
+        }
+        catch(e){
+            console.log(e);
+        }
+    })();
+    },[page]);
+
     return(<div>
             <h1>Book&apos;s List</h1>
                 <div>
-                {fetchedCards.map(card => { 
-                    return (<Link href={`/books/${card.id}`} key={`books/${page}/${card.id}`}>
+                {books.map((card: IBookCardProps) => { 
+                    return (<Link href={`/books/${card.id}`} key={`books/${card.id}`}>
                                 <a><BookCard {...card} /></a>
                             </Link>);}) 
-                    }   
+                }
+                <p ref={loadTarget}>{fetchStatus === FetchStatus.Ended ?'It\'s all' : 'More' }</p>
                 </div>
-                <p ref={loadTarget}>It&apos;s all</p>
             </div>);
 };
 
-export const  getStaticProps: GetStaticProps<BooksPageProps> = async (ctx) => {
+export const getStaticProps : GetStaticProps = wrapper.getStaticProps(store => async () => {
     try{
-        const res = await BookAPI.getMassiveData(initPage,offset);
-        return {
-            props: {
-                books:res
-            }
-        };
+        const { page } = store.getState().books;
+        store.dispatch(fetchBooks(page));
+        return { props: { books:[]  } };
     }
     catch(e){
-        return { props : { books:[] } };
+        return { props: { books:[] } };
     }
-};
+});
 
 export default BooksPage;

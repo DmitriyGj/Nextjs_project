@@ -1,5 +1,3 @@
-import { withLayout } from "../public/src/HOC/Layout/Layout";
-
 const NotFound = () => {
     return(
         <div>

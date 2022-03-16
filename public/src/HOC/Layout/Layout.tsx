@@ -16,6 +16,7 @@ const Layout = ({children} : LayoutProps) => {
     const [isLoad, setIsLoad] = useState(false);  
 
     useEffect(() => {
+
         const routeChangeStartHandler = () => {
             document.body.style.overflow = 'hidden';
             setIsLoad(true);
@@ -45,8 +46,7 @@ const Layout = ({children} : LayoutProps) => {
             </Sidebar>
             <div>
                 <div className={style.Body}>
-                    {isLoad && <Loader />}
-                    {!isLoad && children}
+                    { isLoad ? <Loader /> : children }
                 </div>
             </div>
         </div>
