@@ -3,5 +3,5 @@ import { ICharacterFullInfo } from './CharacterFullInfo.model';
 import { IExtendedLinkProps } from './ExtendedLinkProps.model';
 import { IFetchParams } from './IFetchParams.model';
 import { IHouseFullInfo } from './HouseFullInfo.model';
-
-export type { IExtendedLinkProps, IBookFullInfo, ICharacterFullInfo, IHouseFullInfo , IFetchParams  };
+import { ICard } from './ICard';
+export type { IExtendedLinkProps, IBookFullInfo, ICharacterFullInfo, IHouseFullInfo , IFetchParams, ICard  };

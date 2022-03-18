@@ -1,23 +1,39 @@
-import { createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
-import { FetchStatus } from "../constants";
-import { IHouse } from "../services";
+import { FetchStatus, offset } from "../constants";
+import { HouseAPI, IHouse } from "../services";
 import { RootState } from "../store/IceAndFireStore";
 import { IHouseFullInfo } from "../ts";
 
 export interface IHouseState {
     page: number,
-    FetchStatus: FetchStatus
+    fetchStatus: FetchStatus
     houses: IHouse []
     currentHouse: IHouseFullInfo | null
 };
 
 const initialState: IHouseState = {
     page: 1,
-    FetchStatus: FetchStatus.Needed,
+    fetchStatus: FetchStatus.Needed,
     houses: [],
     currentHouse: null
 };
+
+export const fetchHouses = createAsyncThunk(
+    'houses/fetchMassive',
+    async (page:number) => {
+        const response = await HouseAPI.getMassiveData(page,offset);
+        return response;
+    }
+);
+
+export const fetchHouse = createAsyncThunk(
+    'houses/fetchFullData',
+    async (id: string) => {
+        const response = await  HouseAPI.getFullData(id);
+        return response;
+    }
+);
 
 export const housesSlice: Slice =  createSlice({
     name:'houses',
@@ -45,6 +61,29 @@ export const housesSlice: Slice =  createSlice({
             return {
                 ...state, page, houses, currentHouse
             };
+        },
+        [fetchHouses.pending.type]:(state) => {
+            state.fetchStatus = FetchStatus.Pending;
+        },
+        [fetchHouses.rejected.type]:(state) => {
+            state.fetchStatus = FetchStatus.Rejected;
+        },
+        [fetchHouses.fulfilled.type]:(state,action: PayloadAction<IHouse[]>) => {
+            state.fetchStatus = FetchStatus.Fulfilled;
+            if(action.payload.length < offset){
+                state.fetchStatus = FetchStatus.Ended;
+            }
+            state.houses = [...state.houses, ...action.payload];
+        },
+
+        [fetchHouses.pending.type]:(state) => {
+            state.fetchStatus = FetchStatus.Pending;
+        },
+        [fetchHouses.rejected.type]:(state) => {
+            state.fetchStatus = FetchStatus.Rejected;
+        },
+        [fetchHouses.fulfilled.type]:(state,action: PayloadAction<IHouseFullInfo>) => {
+            state.currentHouse = action.payload;
         }
     }
 });

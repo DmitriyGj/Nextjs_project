@@ -1,4 +1,4 @@
-import { ICharacter } from '../../services/index'
+import { ICharacter } from '../../services/index';
 
 export interface ICharacterCardProps extends ICharacter{
 

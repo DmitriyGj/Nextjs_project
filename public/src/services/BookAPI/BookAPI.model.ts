@@ -1,7 +1,6 @@
-export interface IBook{
-    url:string
-    id:string
-    name:string
+import { ICard } from "../../ts"
+
+export interface IBook extends ICard{
     authors: string []
 }
 
