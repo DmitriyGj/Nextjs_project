@@ -25,9 +25,11 @@ export const getStaticProps : GetStaticProps = wrapper.getStaticProps(store => a
         store.dispatch(clearHouses(null));
         const { page } = store.getState().books;
         store.dispatch(fetchHouses(page));
-        return { props: { houses:[]  } };
     }
     catch(e){
+        console.log(e);
+    }
+    finally{
         return { props: { houses:[] } };
     }
 });

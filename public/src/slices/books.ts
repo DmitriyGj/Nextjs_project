@@ -72,6 +72,9 @@ export const booksSlice: Slice =  createSlice({
             state.fetchStatus = FetchStatus.Rejected;
         },
         [fetchBooks.fulfilled.type]:(state,action: PayloadAction<IBook[]>) => {
+            if(!action.payload){
+                return {...state, books: [], fetchStatus: FetchStatus.Fulfilled};
+            }
             state.fetchStatus = FetchStatus.Fulfilled;
             if(action.payload.length < offset){
                 state.fetchStatus = FetchStatus.Ended;
@@ -86,7 +89,11 @@ export const booksSlice: Slice =  createSlice({
             state.fetchStatus = FetchStatus.Rejected;
         },
         [fetchBook.fulfilled.type]:(state,action: PayloadAction<IBookFullInfo>) => {
+            if(!action.payload){
+                return {...state, fetchStatus: FetchStatus.Rejected};
+            }
             state.currentBook = action.payload;
+            state.fetchStatus = FetchStatus.Fulfilled;
         }
     }
 });

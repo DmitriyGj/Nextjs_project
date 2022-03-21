@@ -72,7 +72,7 @@ export const PageWithFetchContent = ({title,
             <h1>{title}</h1>
                 <div>
                 {cards.map(card => { 
-                    return (<Link href={`${router.pathname}/${card.id}`} key={`books/${card.id}`}>
+                    return (<Link href={`${router.pathname}/${card.id}`} key={`${router.pathname}/${card.id}`}>
                                 <a><ContentCard {...card} /></a>
                             </Link>);}) 
                 }
@@ -80,5 +80,3 @@ export const PageWithFetchContent = ({title,
                 </div>
             </div>);
 };
-
-PageWithFetchContent.getStaticProps = 'Здесь код со скрина';

@@ -25,9 +25,11 @@ export const  getStaticProps: GetStaticProps = wrapper.getStaticProps(
             store.dispatch(clearCharacters(null));
             const {page} = store.getState().characters;
             store.dispatch(fetchCharacters(page));
-            return { props: { initCharacters: [] } };
         }
         catch(e){
+            console.log(e);
+        }
+        finally{
             return { props: { initCharacters: [] } };
         }
     }

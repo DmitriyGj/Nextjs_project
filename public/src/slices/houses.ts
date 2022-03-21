@@ -69,6 +69,9 @@ export const housesSlice: Slice =  createSlice({
             state.fetchStatus = FetchStatus.Rejected;
         },
         [fetchHouses.fulfilled.type]:(state,action: PayloadAction<IHouse[]>) => {
+            if(!action.payload){
+                return {...state, houses: [], fetchStatus: FetchStatus.Fulfilled};
+            }
             state.fetchStatus = FetchStatus.Fulfilled;
             if(action.payload.length < offset){
                 state.fetchStatus = FetchStatus.Ended;
@@ -83,7 +86,11 @@ export const housesSlice: Slice =  createSlice({
             state.fetchStatus = FetchStatus.Rejected;
         },
         [fetchHouses.fulfilled.type]:(state,action: PayloadAction<IHouseFullInfo>) => {
+            if(!action.payload){
+                return {...state, fetchStatus: FetchStatus.Rejected};
+            }
             state.currentHouse = action.payload;
+            state.fetchStatus = FetchStatus.Fulfilled;
         }
     }
 });

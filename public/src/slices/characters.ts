@@ -56,36 +56,42 @@ export const charactersSlice: Slice =  createSlice({
         }
     },
     extraReducers:{
-    [HYDRATE]:(state, action: PayloadAction<RootState>) => {
-            const {page,characters, currentCharacter} = action.payload.characters;
-            return {
-                ...state, page, characters, currentCharacter
-            };
-        },
+        [HYDRATE]:(state, action: PayloadAction<RootState>) => {
+                const {page,characters, currentCharacter} = action.payload.characters;
+                return {
+                    ...state, page, characters, currentCharacter
+                };
+            },
 
-    [fetchCharacters.pending.type]:(state) => {
-            state.fetchStatus = FetchStatus.Pending;
-        },
-    [fetchCharacters.rejected.type]:(state) => {
-            state.fetchStatus = FetchStatus.Rejected;
-        },
-    [fetchCharacters.fulfilled.type]:(state,action) => {
-            state.fetchStatus = FetchStatus.Fulfilled;
-            if(action.payload.length < offset){
-                state.fetchStatus = FetchStatus.Ended;
+        [fetchCharacters.pending.type]:(state) => {
+                state.fetchStatus = FetchStatus.Pending;
+            },
+        [fetchCharacters.rejected.type]:(state) => {
+                state.fetchStatus = FetchStatus.Rejected;
+            },
+        [fetchCharacters.fulfilled.type]:(state,action) => {
+            if(!action.payload){
+                return {...state, characters: [], fetchStatus: FetchStatus.Fulfilled};
             }
-            state.characters = [...state.characters, ...action.payload];
-        },
+                state.fetchStatus = FetchStatus.Fulfilled;
+                if(action.payload.length < offset){
+                    state.fetchStatus = FetchStatus.Ended;
+                }
+                state.characters = [...state.characters, ...action.payload];
+            },
 
-    [fetchCharacter.pending.type]:(state) => {
-            state.fetchStatus = FetchStatus.Pending;
-        },
-    [fetchCharacter.rejected.type]:(state) => {
-            state.fetchStatus = FetchStatus.Rejected;
-        },
-    [fetchCharacter.fulfilled.type]:(state,action) => {
-            state.fetchStatus = FetchStatus.Fulfilled;
+        [fetchCharacter.pending.type]:(state) => {
+                state.fetchStatus = FetchStatus.Pending;
+            },
+        [fetchCharacter.rejected.type]:(state) => {
+                state.fetchStatus = FetchStatus.Rejected;
+            },
+        [fetchCharacter.fulfilled.type]:(state,action) => {
+            if(!action.payload){
+                return {...state, fetchStatus: FetchStatus.Rejected};
+            }
             state.currentCharacter = action.payload;
+            state.fetchStatus = FetchStatus.Fulfilled;
         }
     }
 });

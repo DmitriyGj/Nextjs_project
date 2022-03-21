@@ -1,10 +1,8 @@
 import { GetServerSideProps } from 'next';
 import { HouseAPI } from '../../public/src/services';
 import { HouseBlock } from "../../public/src/components/HouseBlock/HouseBlock";
-import { IHouseFullInfo } from "../../public/src/ts";
-import { withLayout } from "../../public/src/HOC/Layout/Layout";
 import { wrapper } from '../../public/src/store/IceAndFireStore';
-import { setCurrentHouse } from '../../public/src/slices/houses';
+import { clearHouses, fetchHouse, fetchHouses, setCurrentHouse  } from '../../public/src/slices/houses';
 import { getCurrentHouse } from '../../public/src/selectors/houses';
 import { useAppSelector } from '../../public/src/store/hooks';
 
@@ -25,19 +23,19 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
             if(!id){
                 return { notFound: true };
             }
-
-            const houseInfo = await HouseAPI.getFullData(id as string);
-            if(!houseInfo){
+            
+            const res = (await store.dispatch(fetchHouse(id))).payload;
+            if(!res){
                 return { notFound: true };
             }
-            
-            store.dispatch(setCurrentHouse(houseInfo));
-            return { props: { houseInfo: houseInfo } };
         }
         catch(e){
             console.log(e);
             store.dispatch(setCurrentHouse(null));
             return { notFound: true };
+        }
+        finally{
+            return { props: { } };
         }
     });
 

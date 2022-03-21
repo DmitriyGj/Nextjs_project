@@ -26,9 +26,11 @@ export const getStaticProps : GetStaticProps = wrapper.getStaticProps(store => a
         store.dispatch(clearBooks(null));
         const { page } = store.getState().books;
         store.dispatch(fetchBooks(page));
-        return { props: { books:[]  } };
     }
     catch(e){
+        console.log(e);
+    }
+    finally{
         return { props: { books:[] } };
     }
 });
