@@ -1,23 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
-import { FetchStatus, offset } from "../constants";
-import { HouseAPI, IHouse } from "../services";
-import { RootState } from "../store/IceAndFireStore";
-import { IHouseFullInfo } from "../ts";
-
-export interface IHouseState {
-    page: number,
-    fetchStatus: FetchStatus
-    houses: IHouse []
-    currentHouse: IHouseFullInfo | null
-};
-
-const initialState: IHouseState = {
-    page: 1,
-    fetchStatus: FetchStatus.Needed,
-    houses: [],
-    currentHouse: null
-};
+import { FetchStatus, offset, SlicesInitialStates } from "../../constants";
+import { HouseAPI, IHouse } from "../../services";
+import { RootState } from "../../store/IceAndFireStore";
+import { IHouseFullInfo } from "../../ts";
+import { IHouseState } from "./HousesSlice.model";
 
 export const fetchHouses = createAsyncThunk(
     'houses/fetchMassive',
@@ -37,7 +24,7 @@ export const fetchHouse = createAsyncThunk(
 
 export const housesSlice: Slice =  createSlice({
     name:'houses',
-    initialState: initialState,
+    initialState: SlicesInitialStates.houses,
     reducers:{
         setFetchStatus(state, action : PayloadAction<FetchStatus>){
             state.FetchStatus = action.payload;
@@ -52,7 +39,7 @@ export const housesSlice: Slice =  createSlice({
             state.page++;
         },
         clearHouses(state){
-            state = initialState;
+            state = SlicesInitialStates.houses;
         }
     },
     extraReducers:{

@@ -1,0 +1,22 @@
+.PageContent {
+    display: grid;
+    grid-template-columns: 80% 20%;
+
+    & > .CardsBlock{
+        grid-column: 1/-1;
+        z-index: 1;
+    }
+
+    & > .Shower{
+        grid-column: -1;
+    }
+
+    & > .Shower:hover {
+        transform: scale(1.1);
+        text-decoration: underline;
+        cursor: pointer;
+        height: 5%;
+        color:blue;
+    }
+
+}

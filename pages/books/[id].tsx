@@ -1,10 +1,10 @@
 import { BookBlock } from "../../public/src/components/BookBlock/BookBlock";
 import { GetServerSideProps } from "next";
 import { wrapper } from "../../public/src/store/IceAndFireStore";
-import { setCurrentBook } from '../../public/src/slices/books';
+import { setCurrentBook } from '../../public/src/slices/Books/books';
 import { getCurrentBook } from "../../public/src/selectors/books";
 import { useAppSelector } from "../../public/src/store/hooks";
-import { fetchBook } from "../../public/src/slices/books";
+import { fetchBook } from "../../public/src/slices/Books/books";
 
 const BookPage = ( ) => {
     const bookInfo = useAppSelector(getCurrentBook);

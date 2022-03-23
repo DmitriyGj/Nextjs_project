@@ -1,4 +1,4 @@
-import { Component, FC, Props, ReactElement, ReactNode, useEffect, useRef } from 'react';
+import { Component, FC, Props, ReactElement, ReactNode, useEffect, useRef, useState } from 'react';
 
 import Link from "next/link";
 import { RootState } from '../../store/IceAndFireStore';
@@ -7,6 +7,10 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { ICard } from '../../ts';
 import { useRouter } from 'next/router';
 import { ActionCreatorWithoutPayload, ActionCreatorWithPayload, AsyncThunk } from '@reduxjs/toolkit';
+import { IFilter } from '../../ts/IFetchParams.model';
+import style from './PageWithFetchContent.module.scss';
+import { ModalWindow } from '../../components/ModalWindow/ModalWindow';
+import { Portal } from '../Portal/Portal';
 
 export interface IWithContentPageProps {
     title: string
@@ -15,9 +19,10 @@ export interface IWithContentPageProps {
     getContent: (state: RootState) => ICard []
     incrementPage:  ActionCreatorWithPayload<any, string> | ActionCreatorWithoutPayload<string>
     fetchContent: AsyncThunk<any[], number, {}>
-    ContentCard: (props:any) => JSX.Element
+    ContentCard: (props:any) => JSX.Element,
+    getFilter: (state: RootState) => IFilter,
+    setFilter: (state: RootState) => ActionCreatorWithPayload<any,any>
 };
-
 
 export const PageWithFetchContent = ({title,
                                     getPage,
@@ -33,6 +38,7 @@ export const PageWithFetchContent = ({title,
     const loadTarget = useRef(null);
     const dispatch = useAppDispatch();
     const router = useRouter();
+    const [showModal, setShowModal] = useState<boolean>(false);
 
     useEffect(() => {
         const { current } = loadTarget;
@@ -68,15 +74,21 @@ export const PageWithFetchContent = ({title,
     })();
     },[page]);
 
-    return(<div>
-            <h1>{title}</h1>
-                <div>
-                {cards.map(card => { 
-                    return (<Link href={`${router.pathname}/${card.id}`} key={`${router.pathname}/${card.id}`}>
-                                <a><ContentCard {...card} /></a>
-                            </Link>);}) 
-                }
-                <p ref={loadTarget}>{fetchStatus === FetchStatus.Ended ?'It\'s all' : 'More' }</p>
+    return(<div className={style.PageContent}>
+                <div className={style.CardsBlock}>
+                    <h1>{title}</h1>
+
+                    <div>
+                        {cards.map(card => { 
+                            return (<Link href={`${router.pathname}/${card.id}`} key={`${router.pathname}/${card.id}`}>
+                                        <a><ContentCard {...card} /></a>
+                                    </Link>);}) 
+                        }
+                        <p ref={loadTarget}>{fetchStatus === FetchStatus.Ended ?'It\'s all' : 'More' }</p>
+                    </div>
                 </div>
+                <span onClick={() => setShowModal(true)}
+                                className={style.Shower}>Filters</span>
+                {showModal && <ModalWindow visible={showModal} title='Фильтр' onClose={()=>setShowModal(false)}>ssss</ModalWindow>}
             </div>);
 };

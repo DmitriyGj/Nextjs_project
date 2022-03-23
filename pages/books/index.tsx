@@ -2,9 +2,9 @@ import { BookCard } from "../../public/src/components/BookCard/BookCard";
 import { GetStaticProps } from "next";
 import { wrapper } from '../../public/src/store/IceAndFireStore';
 
-import { clearBooks, incrementPage } from '../../public/src/slices/books';
+import { clearBooks, incrementPage } from '../../public/src/slices/Books/books';
 import { getBooks, getFetchBooksStatus, getPage } from '../../public/src/selectors/books';
-import { fetchBooks } from '../../public/src/slices/books';
+import { fetchBooks } from '../../public/src/slices/Books/books';
 import{ IWithContentPageProps, PageWithFetchContent } from '../../public/src/HOC/PageWithFetchContent/PageWithFetchContent';
 
 const BooksPagePprops: IWithContentPageProps = {

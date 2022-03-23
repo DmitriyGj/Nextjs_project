@@ -1,23 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
-import { FetchStatus, initPage, offset } from "../constants";
-import { CharacterAPI, ICharacter } from "../services";
-import { RootState } from "../store/IceAndFireStore";
-import {  ICharacterFullInfo } from "../ts";
-
-export interface ICharacterState {
-    page: number,
-    fetchStatus: FetchStatus
-    characters: ICharacter[]
-    currentCharacter: ICharacterFullInfo | null
-};
-
-const initialState: ICharacterState = {
-    page: initPage,
-    fetchStatus: FetchStatus.Needed,
-    characters: [],
-    currentCharacter: null
-};
+import { FetchStatus, initPage, offset, SlicesInitialStates } from "../../constants";
+import { CharacterAPI, ICharacter } from "../../services";
+import { RootState } from "../../store/IceAndFireStore";
+import {  ICharacterFullInfo } from "../../ts";
+import { ICharacterState } from "./CharactersSlice.model";
 
 export const fetchCharacters = createAsyncThunk(
     'characters/fetchMassive',
@@ -37,7 +24,7 @@ export const fetchCharacter = createAsyncThunk(
 
 export const charactersSlice: Slice =  createSlice({
     name:'charcters',
-    initialState: initialState,
+    initialState: SlicesInitialStates.characters,
     reducers:{
         setFetchStatus(state, action : PayloadAction<FetchStatus>){
             state.FetchStatus = action.payload;
@@ -52,7 +39,7 @@ export const charactersSlice: Slice =  createSlice({
             state.page++;
         },
         clearCharacters(){
-            return initialState;
+            return SlicesInitialStates.characters;
         }
     },
     extraReducers:{

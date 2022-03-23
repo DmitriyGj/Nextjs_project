@@ -1,25 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
-import { FetchStatus, offset } from "../constants";
-import { IBook  } from "../services";
-import { RootState } from "../store/IceAndFireStore";
-import {  IBookFullInfo } from "../ts";
-import { BookAPI } from "../services";
-import { initPage } from '../constants';
-
-export interface IBooksState {
-    page: number,
-    fetchStatus: FetchStatus
-    books: IBook[]
-    currentBook: IBookFullInfo | null
-};
-
-const initialState: IBooksState = {
-    page: initPage,
-    fetchStatus: FetchStatus.Needed,
-    books: [],
-    currentBook: null
-};
+import { FetchStatus, offset, SlicesInitialStates } from "../../constants";
+import { IBook  } from "../../services";
+import { RootState } from "../../store/IceAndFireStore";
+import {  IBookFullInfo } from "../../ts";
+import { BookAPI } from "../../services";
 
 export const fetchBooks = createAsyncThunk(
     'books/fetchMassive',
@@ -39,7 +24,7 @@ export const fetchBook = createAsyncThunk(
 
 export const booksSlice: Slice =  createSlice({
     name:'books',
-    initialState: initialState,
+    initialState: SlicesInitialStates.books,
     reducers:{
         setFetchStatus(state, action : PayloadAction<FetchStatus>){
             state.fetchStatus = action.payload;
@@ -54,7 +39,7 @@ export const booksSlice: Slice =  createSlice({
             state.page++;
         },
         clearBooks(){
-            return initialState;
+            return SlicesInitialStates.books;
         }
     },
     extraReducers:{
