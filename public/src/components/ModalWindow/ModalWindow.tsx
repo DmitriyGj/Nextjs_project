@@ -1,6 +1,5 @@
 import { ReactElement, ReactNode, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Portal } from "../../HOC/Portal/Portal";
 import style from './ModalWindow.module.scss';
 
 interface ModalWindowProps {
