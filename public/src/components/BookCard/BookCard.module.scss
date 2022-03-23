@@ -1,0 +1,9 @@
+.BookCard{
+    box-sizing:border-box;
+    padding: 1%;
+    border: 2px solid gray;
+    border-radius: 20px;
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    margin: 2% auto;
+}

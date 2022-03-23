@@ -1,0 +1,21 @@
+.HouseCard{
+    justify-content: center;
+    border: 2px solid gray;
+    border-radius: 20px;
+    box-sizing: border-box;
+    padding: 1%;
+    display: grid;
+    grid-template-columns: repeat(2,1fr) ;
+    margin-bottom: 2%;
+
+    background-color: white;
+    *{
+        box-sizing: border-box;
+    }
+
+    &:hover{
+        cursor: pointer;
+    }
+}
+
+
