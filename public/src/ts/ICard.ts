@@ -1,5 +1,5 @@
 export interface ICard { 
-    utl: string
+    url: string
     id: string 
     name: string 
 }

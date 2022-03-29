@@ -1,3 +1,5 @@
+import { Orientation } from "../../constants";
+
 export interface ISubBlockContent{
     id: string 
     name: string 
@@ -5,7 +7,7 @@ export interface ISubBlockContent{
 
 export interface ISubBlockBaseProps{
     title: string 
-    orientation?: 'horizontal' | 'vertical'
+    orientation?: Orientation
 }
 
 export interface ISubBlockProps extends ISubBlockBaseProps {

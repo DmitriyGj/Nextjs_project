@@ -4,4 +4,7 @@ import { IExtendedLinkProps } from './ExtendedLinkProps.model';
 import { IFetchParams } from './IFetchParams.model';
 import { IHouseFullInfo } from './HouseFullInfo.model';
 import { ICard } from './ICard';
-export type { IExtendedLinkProps, IBookFullInfo, ICharacterFullInfo, IHouseFullInfo , IFetchParams, ICard  };
+import { ISlicesStatesInfo } from './SlicesStatesInfo.model';
+import { IGenericBuffer } from './IGenericBuffer';
+import { FilterField } from './FilterField.model';
+export type { FilterField, IExtendedLinkProps, ISlicesStatesInfo, IBookFullInfo, ICharacterFullInfo, IHouseFullInfo , IFetchParams, ICard , IGenericBuffer };

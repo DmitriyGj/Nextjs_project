@@ -1,7 +1,7 @@
 import { CharacterCard } from "../../public/src/components/CharacterCard/CharacterCard";
 import { GetStaticProps} from "next";
 import { wrapper } from "../../public/src/store/IceAndFireStore";
-import { clearCharacters, fetchCharacters, incrementPage } from "../../public/src/slices/characters";
+import { clearCharacters, fetchCharacters, incrementPage } from "../../public/src/slices/Characters/characters";
 import { getCharacters, getFetchStatusCharacters, getPage } from "../../public/src/selectors/characters";
 import{ IWithContentPageProps, PageWithFetchContent } from '../../public/src/HOC/PageWithFetchContent/PageWithFetchContent';
 

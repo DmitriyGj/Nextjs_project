@@ -1,30 +1,21 @@
 import { createAsyncThunk, createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
-import { FetchStatus, offset } from "../constants";
-import { IBook  } from "../services";
-import { RootState } from "../store/IceAndFireStore";
-import {  IBookFullInfo } from "../ts";
-import { BookAPI } from "../services";
-import { initPage } from '../constants';
-
-export interface IBooksState {
-    page: number,
-    fetchStatus: FetchStatus
-    books: IBook[]
-    currentBook: IBookFullInfo | null
-};
-
-const initialState: IBooksState = {
-    page: initPage,
-    fetchStatus: FetchStatus.Needed,
-    books: [],
-    currentBook: null
-};
+import { FetchStatus, offset, SlicesInitialStates } from "../../constants";
+import { IBook  } from "../../services";
+import { RootState } from "../../store/IceAndFireStore";
+import {  IBookFullInfo } from "../../ts";
+import { BookAPI } from "../../services";
+import { BooksFilterParams } from "../../ts/IFetchParams.model";
 
 export const fetchBooks = createAsyncThunk(
     'books/fetchMassive',
-    async (page:number) => {
-        const response = await BookAPI.getMassiveData(page,offset);
+    async (params:{page:number,filter: BooksFilterParams }) => {
+        const {page, filter} = params;
+        console.log(filter);
+
+        const response = filter ? 
+            await BookAPI.getMassiveData(page,offset,filter) : 
+            await  BookAPI.getMassiveData(page,offset) ;
         return response;
     }
 );
@@ -39,7 +30,7 @@ export const fetchBook = createAsyncThunk(
 
 export const booksSlice: Slice =  createSlice({
     name:'books',
-    initialState: initialState,
+    initialState: SlicesInitialStates.books,
     reducers:{
         setFetchStatus(state, action : PayloadAction<FetchStatus>){
             state.fetchStatus = action.payload;
@@ -54,7 +45,7 @@ export const booksSlice: Slice =  createSlice({
             state.page++;
         },
         clearBooks(){
-            return initialState;
+            return SlicesInitialStates.books;
         }
     },
     extraReducers:{
@@ -98,5 +89,5 @@ export const booksSlice: Slice =  createSlice({
     }
 });
 
-export const { setFetchStatus, clearBooks , setBooks, incrementPage, setCurrentBook } = booksSlice.actions;
+export const { setFetchStatus, clearBooks , setBooks, incrementPage, setCurrentBook, setBooksFilter } = booksSlice.actions;
 export default booksSlice.reducer;

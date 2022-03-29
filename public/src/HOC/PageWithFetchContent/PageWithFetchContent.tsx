@@ -1,4 +1,4 @@
-import { Component, FC, Props, ReactElement, ReactNode, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Link from "next/link";
 import { RootState } from '../../store/IceAndFireStore';
@@ -7,21 +7,27 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { ICard } from '../../ts';
 import { useRouter } from 'next/router';
 import { ActionCreatorWithoutPayload, ActionCreatorWithPayload, AsyncThunk } from '@reduxjs/toolkit';
-
+import style from './PageWithFetchContent.module.scss';
+import { ModalWindow } from '../../components/ModalWindow/ModalWindow';
+import { FiltersBlock } from '../../components/FiltersBlock/FiltersBlock';
+import { selectorsByDirectory } from '../../selectors/filters';
+import { setFiltersByDirectory } from '../../slices';
+import { IFilter } from '../../ts/IFetchParams.model';
 export interface IWithContentPageProps {
     title: string
     getPage: (state: RootState) => number
     getFetchStatus: (state: RootState) => FetchStatus
     getContent: (state: RootState) => ICard []
+    clearContent: ActionCreatorWithPayload<any, string> | ActionCreatorWithoutPayload<string>
     incrementPage:  ActionCreatorWithPayload<any, string> | ActionCreatorWithoutPayload<string>
-    fetchContent: AsyncThunk<any[], number, {}>
-    ContentCard: (props:any) => JSX.Element
+    fetchContent: AsyncThunk<any[], any, {}> 
+    ContentCard: (props:any) => JSX.Element,
 };
-
 
 export const PageWithFetchContent = ({title,
                                     getPage,
                                     getContent,
+                                    clearContent,
                                     getFetchStatus,
                                     incrementPage,
                                     fetchContent,
@@ -33,6 +39,8 @@ export const PageWithFetchContent = ({title,
     const loadTarget = useRef(null);
     const dispatch = useAppDispatch();
     const router = useRouter();
+    const filter = useAppSelector(selectorsByDirectory[router.pathname]);
+    const [showModal, setShowModal] = useState<boolean>(false);
 
     useEffect(() => {
         const { current } = loadTarget;
@@ -59,7 +67,8 @@ export const PageWithFetchContent = ({title,
 
     useEffect(() => { ( async () => {
         try{
-            dispatch(fetchContent(page));
+            console.log(filter);
+            dispatch(fetchContent({page,filter}));
         }
         catch(e){
             console.log(e);
@@ -68,15 +77,34 @@ export const PageWithFetchContent = ({title,
     })();
     },[page]);
 
-    return(<div>
-            <h1>{title}</h1>
-                <div>
-                {cards.map(card => { 
-                    return (<Link href={`${router.pathname}/${card.id}`} key={`${router.pathname}/${card.id}`}>
-                                <a><ContentCard {...card} /></a>
-                            </Link>);}) 
-                }
-                <p ref={loadTarget}>{fetchStatus === FetchStatus.Ended ?'It\'s all' : 'More' }</p>
+    useEffect(() => {
+        dispatch(clearContent(null));
+        dispatch(fetchContent({page,filter}));
+    },[filter]);
+
+    return(<div className={style.PageContent}>
+                <div className={style.CardsBlock}>
+                    <h1>{title}</h1>
+
+                    <div>
+                        {cards.map(card => { 
+                            return (<Link href={`${router.pathname}/${card.id}`} key={`${router.pathname}/${card.id}`}>
+                                        <a><ContentCard {...card} /></a>
+                                    </Link>);}) 
+                        }
+                        <p ref={loadTarget}>{fetchStatus === FetchStatus.Ended ?'It\'s all' : 'More' }</p>
+                    </div>
                 </div>
+                <span onClick={() => setShowModal(true)}
+                                className={style.Shower}>Filters</span>
+                {showModal && <ModalWindow visible={showModal}
+                                        title='Фильтр' 
+                                        onClose={()=>setShowModal(false)}>
+
+                        <FiltersBlock filterValue={filter} 
+                                    clickApplyHandler={()=>setShowModal(false)}
+                                    setFilterFunction={setFiltersByDirectory[router.pathname]} 
+                                    selectorFunction={selectorsByDirectory[router.pathname]} />
+                    </ModalWindow>}
             </div>);
 };

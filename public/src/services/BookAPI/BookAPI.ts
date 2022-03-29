@@ -4,6 +4,7 @@ import { IBookFullInfo } from '../../ts';
 import { urlHelper } from '../../utilites/urlHelper';
 import { directories } from '../../constants';
 import { CharacterAPI } from '../';
+import { BooksFilterParams } from '../../ts/IFetchParams.model';
 
 const {getId} = urlHelper;
 class BooksAPI extends IceAndFireService<IBook,IBookFullInfo>{
@@ -11,11 +12,14 @@ class BooksAPI extends IceAndFireService<IBook,IBookFullInfo>{
         super();
     }
     override directory = directories.books;
-    async getMassiveData(page: number, amount: number): Promise<IBook[]> {
-        const url = `${this.baseURL}/${this.directory}?page=${page}&pageSize=${amount}`;
+    async getMassiveData(page: number, amount: number, filter?: BooksFilterParams): Promise<IBook[]> {
+        const baseQueryUrl = `${this.baseURL}/${this.directory}?page=${page}&pageSize=${amount}`;
+        const filterString = filter?  Object.keys(filter).reduce((prev, curr) => {
+                return filter[curr] ? `${prev}&${curr}=${filter[curr].value}` : prev;
+            },``)
+            :'';
         try{
-            const response = await fetch(url);
-
+            const response = await fetch(`${baseQueryUrl}${filterString}`);
             if(!response.ok){
                 throw new Error('Что-то пошло не так');
             }

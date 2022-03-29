@@ -1,7 +1,7 @@
 import {CharacterBlock} from '../../public/src/components/CharacterBlock/CharacterBlock';
 import { GetServerSideProps } from 'next';
 import { wrapper } from '../../public/src/store/IceAndFireStore';
-import { fetchCharacter, setCurrentCharacter } from '../../public/src/slices/characters';
+import { fetchCharacter, setCurrentCharacter } from '../../public/src/slices/Characters/characters';
 import { useAppSelector } from '../../public/src/store/hooks';
 import { getCurrentCharacter } from '../../public/src/selectors/characters';
 

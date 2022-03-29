@@ -2,7 +2,7 @@ import { GetServerSideProps } from 'next';
 import { HouseAPI } from '../../public/src/services';
 import { HouseBlock } from "../../public/src/components/HouseBlock/HouseBlock";
 import { wrapper } from '../../public/src/store/IceAndFireStore';
-import { clearHouses, fetchHouse, fetchHouses, setCurrentHouse  } from '../../public/src/slices/houses';
+import { clearHouses, fetchHouse, fetchHouses, setCurrentHouse  } from '../../public/src/slices/Houses/houses';
 import { getCurrentHouse } from '../../public/src/selectors/houses';
 import { useAppSelector } from '../../public/src/store/hooks';
 
@@ -23,7 +23,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
             if(!id){
                 return { notFound: true };
             }
-            
+
             const res = (await store.dispatch(fetchHouse(id))).payload;
             if(!res){
                 return { notFound: true };

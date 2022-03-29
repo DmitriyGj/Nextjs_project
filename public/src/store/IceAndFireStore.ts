@@ -1,14 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
-import booksReducer  from "../slices/books";
-import charactersReducer from "../slices/characters";
-import housesReducer from '../slices/houses';
+import booksReducer  from "../slices/Books/books";
+import charactersReducer from "../slices/Characters/characters";
+import housesReducer from '../slices/Houses/houses';
+import filtersReducer from "../slices/Filters/filters";
 
 const IceAndFireStore = configureStore({
     reducer:{
         books: booksReducer,
         characters: charactersReducer,
-        houses: housesReducer
+        houses: housesReducer,
+        filters: filtersReducer
     }
 });
 
