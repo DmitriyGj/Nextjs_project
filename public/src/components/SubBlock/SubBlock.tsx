@@ -1,14 +1,14 @@
 import {ILinkedSubBlockProps, ISubBlockProps} from './SubBlock.props';
 
-import Link from 'next/link';
 import { NavLink } from '../NavLink/NavLink';
 import style from './SubBlock.module.scss';
+import { Orientation } from '../../constants';
 
-export const SubBlock = ({title, content, orientation } : ISubBlockProps ) => {
+export const SubBlock = ({title, content, orientation = Orientation.vertical } : ISubBlockProps ) => {
     return (<div className={style.block}>
                 <p>{title}:</p>
                 {content?.some(item => !!item) &&
-                    <ul className={orientation === 'horizontal'? style.horizontal : style.vertical}>
+                    <ul className={style[orientation] }>
                         {content.map((item,index) => 
                             <li key={index} >{item}</li>)}
                     </ul>}
@@ -19,7 +19,7 @@ export const LinkedSubBlock = ({title, content, orientation, miniCardTypeEntriy}
     return (<div className={style.block}>
         <p>{title}:</p>
         {content?.some(item => !!item) &&
-            <ul className={orientation === 'horizontal'? style.horizontal : style.vertical}>
+            <ul className={style[`${orientation}`]}>
                 {content.map(({ id, name }) => (<li key={ id } >
                                                     <NavLink 
                                                         href={ `/${miniCardTypeEntriy}/${id}` } passHref>

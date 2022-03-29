@@ -6,5 +6,5 @@ import { createObserver } from './LoadObserver';
 import { directories } from "./Directories";
 import { initPage, offset } from "./queryConstants";
 import { SlicesInitialStates } from "./SlicesInitialStates";
-
-export {initPage, SlicesInitialStates, offset, IceAndFireBaseURL, directories, StartndartLinks, InteractionObserverStandatrOptions, FetchStatus, createObserver};
+import { Orientation } from "./Orientation";
+export {Orientation ,initPage, SlicesInitialStates, offset, IceAndFireBaseURL, directories, StartndartLinks, InteractionObserverStandatrOptions, FetchStatus, createObserver};

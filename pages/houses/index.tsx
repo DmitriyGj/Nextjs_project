@@ -1,7 +1,7 @@
 import { GetStaticProps } from "next";
 import { HouseCard } from '../../public/src/components/HouseCard/HouseCard';
 import { getFetchStatusHouses, getHouses, getPage } from "../../public/src/selectors/houses";
-import { clearHouses, fetchHouses, incrementPage } from "../../public/src/slices/houses";
+import { clearHouses, fetchHouses, incrementPage } from "../../public/src/slices/Houses/houses";
 import { wrapper } from "../../public/src/store/IceAndFireStore";
 import { PageWithFetchContent, IWithContentPageProps } from "../../public/src/HOC/PageWithFetchContent/PageWithFetchContent";
 

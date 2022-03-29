@@ -1,8 +1,8 @@
-import { IBookBlockProps } from "./BookBlock.props";
 import { IBookFullInfo } from "../../ts";
 import { LinkedSubBlock } from "../SubBlock/SubBlock";
 import { SubBlock } from "../SubBlock/SubBlock";
 import style from './BookBlock.module.scss';
+import { Orientation } from "../../constants";
 
 export const BookBlock = ({name,
                         authors,
@@ -25,12 +25,12 @@ export const BookBlock = ({name,
             <p>Publisher: {publisher}</p>
             <SubBlock title='Authors' content={authors} />
             
-            <LinkedSubBlock orientation='horizontal' 
+            <LinkedSubBlock orientation={Orientation.horizontal}
                             title='Characters' 
                             content={characters}
                             miniCardTypeEntriy='characters' />
             
-            <LinkedSubBlock orientation='horizontal'
+            <LinkedSubBlock orientation={Orientation.horizontal}
                             title='povCharacters'
                             content={povCharacters}
                             miniCardTypeEntriy='characters' />

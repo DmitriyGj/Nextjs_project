@@ -13,6 +13,7 @@ const BooksPagePprops: IWithContentPageProps = {
     getPage,
     getFetchStatus: getFetchBooksStatus,
     getContent: getBooks,
+    clearContent: clearBooks,
     incrementPage,
     fetchContent: fetchBooks,
 };
@@ -25,7 +26,7 @@ export const getStaticProps : GetStaticProps = wrapper.getStaticProps(store => a
     try{
         store.dispatch(clearBooks(null));
         const { page } = store.getState().books;
-        store.dispatch(fetchBooks(page));
+        store.dispatch(fetchBooks({page,filter:store.getState().filters.books}));
     }
     catch(e){
         console.log(e);

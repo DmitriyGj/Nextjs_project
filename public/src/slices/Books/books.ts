@@ -5,11 +5,17 @@ import { IBook  } from "../../services";
 import { RootState } from "../../store/IceAndFireStore";
 import {  IBookFullInfo } from "../../ts";
 import { BookAPI } from "../../services";
+import { BooksFilterParams } from "../../ts/IFetchParams.model";
 
 export const fetchBooks = createAsyncThunk(
     'books/fetchMassive',
-    async (page:number) => {
-        const response = await BookAPI.getMassiveData(page,offset);
+    async (params:{page:number,filter: BooksFilterParams }) => {
+        const {page, filter} = params;
+        console.log(filter);
+
+        const response = filter ? 
+            await BookAPI.getMassiveData(page,offset,filter) : 
+            await  BookAPI.getMassiveData(page,offset) ;
         return response;
     }
 );
@@ -83,5 +89,5 @@ export const booksSlice: Slice =  createSlice({
     }
 });
 
-export const { setFetchStatus, clearBooks , setBooks, incrementPage, setCurrentBook } = booksSlice.actions;
+export const { setFetchStatus, clearBooks , setBooks, incrementPage, setCurrentBook, setBooksFilter } = booksSlice.actions;
 export default booksSlice.reducer;

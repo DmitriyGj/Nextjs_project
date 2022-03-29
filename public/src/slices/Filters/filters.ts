@@ -1,51 +1,35 @@
-import { createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
-import { RootState } from "../../store/IceAndFireStore";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { BooksFilterParams, CharactersFilterParams, HousesFilterParams } from "../../ts/IFetchParams.model";
 
 const houseFilter : HousesFilterParams = {
-    name: '',
-    region: '',
-    words: '',
-    hasWords: false,
-    hasTitles: false,
-    hasSeats: false,
-    hasDiedOut: false,
-    hasAncestralWeapons: false,
+    name: {value:"" ,type:'text'},
+    region: {value:"" ,type:'text'},
+    words: {value:"" ,type:'text'},
+    hasWords: {value:false ,type:'checkbox'},
+    hasTitles: {value:false ,type:'checkbox'},
+    hasSeats: {value:false ,type:'checkbox'},
+    hasDiedOut: {value:false ,type:'checkbox'},
+    hasAncestralWeapons: {value:false ,type:'checkbox'},
 };
 
-const booksFilter : BooksFilterParams = {
-    name: "",
-    _fromReleaseDate: null,
-    get fromReleaseDate() {
-        if(!this._fromReleaseDate){
-            return '';
-        }
-        return this._fromReleaseDate;
-    },
-    set fromReleaseDate(value) {
-        this._fromReleaseDate = value;
-    },
-    _toReleaseDate: null,
-    get toReleaseDate() {
-        return this._toReleaseDate;
-    },
-    set toReleaseDate(value) {
-        this._toReleaseDate = value;
-    },
+export const initBooksFilter : BooksFilterParams = {
+    name: {value:"" ,type:'text'},
+    fromReleaseDate: {value:"" ,type:'text'},
+    toReleaseDate: {value:"" ,type:'text'},
 };
 
 const charactersFilter : CharactersFilterParams = {
-    name: "",
-    gender: "",
-    culture: "",
-    born: "",
-    died: "",
-    isAlive: false
+    name: {value:"" ,type:'text'},
+    gender: {value:"" ,type:'text'},
+    culture: {value:"" ,type:'text'},
+    born: {value:"" ,type:'text'},
+    died: {value:"" ,type:'text'},
+    isAlive: {value:false ,type:'checkbox'}
 };
 
 const filtersSlice = createSlice({
     name:'filters',
-    initialState:{books: booksFilter, houses: houseFilter, characters: charactersFilter} ,
+    initialState:{books: initBooksFilter, houses: houseFilter, characters: charactersFilter} ,
     reducers:{
         setBooksFilter(state, action: PayloadAction<BooksFilterParams>){
             state.books = action.payload;

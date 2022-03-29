@@ -1,4 +1,4 @@
-import { Component, FC, Props, ReactElement, ReactNode, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Link from "next/link";
 import { RootState } from '../../store/IceAndFireStore';
@@ -7,26 +7,27 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { ICard } from '../../ts';
 import { useRouter } from 'next/router';
 import { ActionCreatorWithoutPayload, ActionCreatorWithPayload, AsyncThunk } from '@reduxjs/toolkit';
-import { IFilter } from '../../ts/IFetchParams.model';
 import style from './PageWithFetchContent.module.scss';
 import { ModalWindow } from '../../components/ModalWindow/ModalWindow';
-import { Portal } from '../Portal/Portal';
-
+import { FiltersBlock } from '../../components/FiltersBlock/FiltersBlock';
+import { selectorsByDirectory } from '../../selectors/filters';
+import { setFiltersByDirectory } from '../../slices';
+import { IFilter } from '../../ts/IFetchParams.model';
 export interface IWithContentPageProps {
     title: string
     getPage: (state: RootState) => number
     getFetchStatus: (state: RootState) => FetchStatus
     getContent: (state: RootState) => ICard []
+    clearContent: ActionCreatorWithPayload<any, string> | ActionCreatorWithoutPayload<string>
     incrementPage:  ActionCreatorWithPayload<any, string> | ActionCreatorWithoutPayload<string>
-    fetchContent: AsyncThunk<any[], number, {}>
+    fetchContent: AsyncThunk<any[], any, {}> 
     ContentCard: (props:any) => JSX.Element,
-    getFilter: (state: RootState) => IFilter,
-    setFilter: (state: RootState) => ActionCreatorWithPayload<any,any>
 };
 
 export const PageWithFetchContent = ({title,
                                     getPage,
                                     getContent,
+                                    clearContent,
                                     getFetchStatus,
                                     incrementPage,
                                     fetchContent,
@@ -38,6 +39,7 @@ export const PageWithFetchContent = ({title,
     const loadTarget = useRef(null);
     const dispatch = useAppDispatch();
     const router = useRouter();
+    const filter = useAppSelector(selectorsByDirectory[router.pathname]);
     const [showModal, setShowModal] = useState<boolean>(false);
 
     useEffect(() => {
@@ -65,7 +67,8 @@ export const PageWithFetchContent = ({title,
 
     useEffect(() => { ( async () => {
         try{
-            dispatch(fetchContent(page));
+            console.log(filter);
+            dispatch(fetchContent({page,filter}));
         }
         catch(e){
             console.log(e);
@@ -73,6 +76,11 @@ export const PageWithFetchContent = ({title,
 
     })();
     },[page]);
+
+    useEffect(() => {
+        dispatch(clearContent(null));
+        dispatch(fetchContent({page,filter}));
+    },[filter]);
 
     return(<div className={style.PageContent}>
                 <div className={style.CardsBlock}>
@@ -89,6 +97,14 @@ export const PageWithFetchContent = ({title,
                 </div>
                 <span onClick={() => setShowModal(true)}
                                 className={style.Shower}>Filters</span>
-                {showModal && <ModalWindow visible={showModal} title='Фильтр' onClose={()=>setShowModal(false)}>ssss</ModalWindow>}
+                {showModal && <ModalWindow visible={showModal}
+                                        title='Фильтр' 
+                                        onClose={()=>setShowModal(false)}>
+
+                        <FiltersBlock filterValue={filter} 
+                                    clickApplyHandler={()=>setShowModal(false)}
+                                    setFilterFunction={setFiltersByDirectory[router.pathname]} 
+                                    selectorFunction={selectorsByDirectory[router.pathname]} />
+                    </ModalWindow>}
             </div>);
 };

@@ -1,4 +1,4 @@
-import { ICard } from "../../ts"
+import { ICard } from "../../ts";
 
 export interface IBook extends ICard{
     authors: string []

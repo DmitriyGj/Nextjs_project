@@ -7,7 +7,10 @@ export const SlicesInitialStates: ISlicesStatesInfo = {
         page: initPage,
         fetchStatus: FetchStatus.Needed,
         books: [],
-        currentBook: null
+        currentBook: null,
+        filter: {name: {value:"" ,type:'text'},
+                fromReleaseDate: {value:"" ,type:'text'},
+                toReleaseDate: {value:"" ,type:'text'}}
     },
     characters: {
         page: initPage,
